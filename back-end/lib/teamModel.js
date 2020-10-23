@@ -1,5 +1,4 @@
 const sql = require('./db')
-const Resp = require('./userModel').Resp
 
 const Team = function (team, resp) {
   this.number = team.number
@@ -10,24 +9,24 @@ const Team = function (team, resp) {
 
 
 Team.getTeamById = function (teamId) {
-  return new Promise( function(resolve, reject){
-  sql.query(`SELECT * FROM Teams WHERE id = ${teamId};`,
-    (err, res) => {
-      if (err) {
-        reject(err)
+  return new Promise(function (resolve, reject) {
+    sql.query(`SELECT * FROM Teams WHERE id = ${teamId};`,
+      (err, res) => {
+        if (err) {
+          reject(err)
+          return
+        }
+
+        if (res.length) {
+
+          resolve(res[0])
+          return
+        }
+
+        // not found team with the id
+        reject("team not found")
         return
-      }
-
-      if (res.length) {
-
-        resolve(res[0])
-        return
-      }
-
-      // not found team with the id
-      reject("team not found" )
-      return
-    })
+      })
   })
 }
 
@@ -35,7 +34,26 @@ Team.getTeamById = function (teamId) {
 
 //Team.getTeamByDept()
 
-//Team.getTeamByDeptNumber()
+Team.getTeamByDeptNumber = function (dept, number) {
+  return new Promise(function (resolve, reject) {
+    sql.query(`SELECT id FROM Teams WHERE dept = "${dept}" AND number = ${number};`,
+      (err, res) => {
+        if (err) {
+          reject(err)
+          return
+        }
+
+        if (res.length) {
+
+          resolve(res[0])
+          return
+        }
+        reject("team not found")
+        return
+      }
+    )
+  })
+}
 
 // Team.createNewTeam()
 

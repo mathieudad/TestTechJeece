@@ -1,7 +1,6 @@
 const express = require('express')
 const app = express()
 const bodyParser = require("body-parser")
-const db = require('./db')
 const userController =  require('./userController')
 const teamController =  require('./teamController')
 
@@ -18,7 +17,7 @@ app.post('/login',userController.read_a_login)
 
 app.get('/team/:teamId', teamController.read_a_team)
 
-app.post('/login/eMail',userController.create_a_user)
+app.post('/create', userController.create_a_user)
 
 port = process.env.PORT || 3000;
 
