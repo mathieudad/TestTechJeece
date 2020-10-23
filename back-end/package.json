@@ -1,0 +1,30 @@
+{
+  "name": "back-end",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./lib/index.js",
+  "scripts": {
+    "devStart": "nodemon lib/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mathieudad/TestTechJeece.git"
+  },
+  "author": "Mathieu DADOUN",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mathieudad/TestTechJeece/issues"
+  },
+  "homepage": "https://github.com/mathieudad/TestTechJeece#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mocha": "^8.2.0",
+    "mysql": "^2.18.1",
+    "node": "^14.14.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}
