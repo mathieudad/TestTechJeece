@@ -15,7 +15,7 @@ const User = function (user, team) {
 
 User.getUserById = function (userId) {
   return new Promise(function (resolve, reject) {
-    sql.query(`SELECT * FROM Users WHERE id = ${userId};`,
+    sql.query(`SELECT * FROM users WHERE id = ${userId};`,
       (err, res) => {
         if (err) {
           console.log("error: ", err)
