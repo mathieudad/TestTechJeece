@@ -1,0 +1,129 @@
+<!doctype html>
+<html>
+<head>
+    <title>Connect</title>
+    <style>
+        #affichage{
+            position: absolute;
+            top: 22%; right: 36%;
+            font-family : Verdana, sans-serif;
+            color: #1818bb;
+            padding : 1em;
+            line-height : 2.5em;
+            
+        }
+        .connexion{
+            font-family: sans-serif;
+            position :absolute;
+            top: 16%; left: 68%;
+            text-align: center;
+        }
+        .carre{
+            border-radius: 1em;
+            border : 2px solid black;
+            margin : 1em 1em 1em 0em;
+            padding : 30px 60px 30px 60px;
+            border-color: #1818bb;
+        }
+        #connexion{
+            text-align: left;
+            line-height: 1.5em;
+        }
+        input[type=submit] {
+            background-color: #1818bb;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+        input[type=submit]:hover {
+            background-color: white;
+            color: #1818bb;
+            border: 1px solid #18b6bb;
+        }
+        input[type=text], input[type=password], input[type=email] {
+            width: 100%;
+            padding: 10px 20px;
+            margin: 5px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        .inscription{
+            line-height: 150%;
+            font-size: 1.1em;
+            font-family: Verdana, sans-serif;
+        }
+        a:hover{
+            color : #fff;
+        }
+    </style>
+    <script LANGUAGE="JavaScript">
+        var user,password;
+        
+        document.addEventListener('DOMContentLoaded', function(){
+            document.querySelector('input[name="pseudo"]').onchange=changeEventUser;
+        },false);
+
+        document.addEventListener('DOMContentLoaded', function(){
+            document.querySelector('input[name="password"]').onchange=changeEventPassword;
+        },false);
+
+        function changeEventUser(event){
+            if(event.target.value)
+                user = event.target.value;
+        }
+        function changeEventPassword(event){
+            if(event.target.value)
+                password = event.target.value;
+        }
+
+        function initElement(){
+            var elt = document.getElementById('submit');
+            elt.onclick = getData;
+        }
+        
+        function getData(){
+            console.log("password = "+password+" user = "+user);
+        }
+    </script>
+</head>
+
+<body style="background-color: #18b6bb;" onload="initElement();">
+    <div>
+        <section id="affichage">
+            <h1>
+                Welcome ! 
+                Venez tester la simplicité des échanges.<br/>
+                Rejoignez le réseau de votre entreprise.<br/>
+                
+            </h1>
+        </section>
+        <div class="connexion">
+            <strong><em>Connectez-vous :</em></strong>
+            <section class="carre">
+                <form>
+                <div id="connexion">
+                    <label for="name"><strong>Adresse email :</strong></label>
+                    <br/>
+                    <input type="email" id="user" placeholder="Entrer le nom d'utilisateur" name="pseudo" required minlength="4" maxlength="20" size="20" required>
+                    <br/><br/>
+                    <label for="name"><strong>Mot de passe :</strong></label>
+                    <br/>
+                    <input type="text" id="password" placeholder="Entrer le mot de passe" name="password" required minlength="4" maxlength="20" size="20" required>
+                </div>
+                <br/><br/>
+                <input type="submit" id='submit' value='Connexion'>
+            </form>
+            </section>
+            <section class="inscription">
+                Vous n'avez pas de compte ?<br/>
+                Inscrivez-vous <a href="index2.html">ici!</a>
+            </section>
+        </div>
+
+    </div>
+</body>
+</html>

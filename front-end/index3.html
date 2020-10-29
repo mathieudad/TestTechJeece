@@ -1,0 +1,122 @@
+<!--<!doctype html>
+<html>
+<head>
+    <style>
+        .affichage{
+            position : absolute;
+            right : 10%;
+        }
+        .message{
+            position : absolute;
+            left : 10%;
+            top : 95%;
+        }
+    </style>
+    <script LANGUAGE="JavaScript">
+        
+    </script>
+</head>
+
+<body style="background-color: #1818bb;">
+    <div>
+        <div class="affichage">
+            <img src="https://maphotoportrait.fr/1224-thickbox_default/photo-ideale-pour-cv-et-linkedin.jpg"/>
+            Nom Prenom</br>
+            Departement</br>
+            Equipe<br/>
+            Descrption<br/>
+        </div>
+        <div class="message">
+            <input type="text" placeholder="Ecrivez votre message">
+        </div>
+    </div>
+</body>
+</html>-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat - Customer Module</title>
+    <style>
+        body {
+            font:12px arial;
+            color: #222;
+            text-align:center;
+            padding:35px;
+        }
+
+        form,p{
+            margin:0;
+            padding:0;
+        }
+
+        input { font:12px arial; }
+
+        a{ 
+            color:#0000FF;
+            text-decoration:none;
+        }
+
+        a:hover{ 
+            text-decoration:underline;
+        }
+
+        #wrapper{
+            position : absolute;
+            top:0%; left:0%;
+            margin:0 auto;
+            padding-bottom:25px;
+            background:#EBF4FB;
+            width:50%;
+            border:1px solid #ACD8F0;
+        }
+
+        #chatbox{
+            text-align:left;
+            margin:0 auto;
+            margin-bottom:25px;
+            padding:10px;
+            background:#fff;
+            height:30em;
+            width:430px;
+            border:1px solid #ACD8F0;
+            overflow:auto;
+        }
+
+        #usermsg {
+            width:30em;
+            height : 8em;
+            border:1px solid #ACD8F0;
+        }
+
+        #menu{
+            padding:12.5px 25px 12.5px 25px;
+        }
+
+        .logout{
+            float:left;
+        }
+
+        #submitmsg{
+            width: 60px;
+        }
+    </style>
+</head>
+
+<body>
+<div id="wrapper">
+    <div id="menu">
+        <p class="logout"><a id="exit" href="#">Exit Chat</a></p>
+        <div style="clear:both"></div>
+    </div>
+     
+    <div id="chatbox"></div>
+     
+    <form name="message" action="">
+        <input name="usermsg" type="text" id="usermsg" size="63" />
+        <input name="submitmsg" type="submit" id="submitmsg" value="Send" />
+    </form>
+</div>
+
+</body>
+</html>
