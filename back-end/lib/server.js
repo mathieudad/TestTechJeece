@@ -28,3 +28,5 @@ app.get('/allUsers/:dept', userController.read_users_by_dept)
 port = process.env.PORT || 3000;
 
 app.listen(port)
+
+

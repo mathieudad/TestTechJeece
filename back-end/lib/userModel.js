@@ -92,10 +92,10 @@ function eMailGenerator(fn, ln) {
         return
       }
       if (res.length) {
-        const eMail = res[length-1]
+        //const eMail = res[length-1]
 
-        const newEMail = firstName + "." + lastName + "." + res.length + "@societe.com"
-        resolve(newEMail)
+        const eMail = firstName + "." + lastName + "." + res.length + "@societe.com"
+        resolve(eMail)
         return
       }
       const eMail = firstName + "." + lastName + "@societe.com"
