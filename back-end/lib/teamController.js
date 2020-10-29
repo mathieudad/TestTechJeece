@@ -14,3 +14,7 @@ exports.read_a_team = async function (req, res) {
     res.json(new Team(team, new Resp(resp)))
 }
 
+exports.create_a_team = async function(req,res){
+    const number = await Team.createNewTeam(req.body.idResp, req.body.dept)
+    res.json(number)
+}

@@ -1,5 +1,7 @@
+const { resolve } = require('path')
 const sql = require('./db')
-var Team = require('./teamModel')
+const Team = require('./teamModel')
+
 
 const User = function (user, team) {
   this.lastName = user.lastName
@@ -35,9 +37,6 @@ User.getUserById = function (userId) {
 }
 
 
-//User.getAllUser()
-
-//User.getUsersByDept()
 
 User.getUserByLogin = function (eMail, password) {
   return new Promise(function (resolve, reject) {
@@ -65,9 +64,27 @@ User.getUserByLogin = function (eMail, password) {
   })
 }
 
+User.getUserByEMail = function (eMail) {
+  return new Promise(function (resolve, reject) {
+    sql.query(`SELECT * FROM Users WHERE eMail = "${eMail}";`,
+      (err, res) => {
+        if (err) {
+          reject(err)
+          return
+        }
 
+        if (res.length) {
+          resolve(res[0])
+          return
+        }
+        reject("user not found by eMail")
+      })
+  })
+}
 
-function eMailGenerator(firstName, lastName) {
+function eMailGenerator(fn, ln) {
+  const firstName = fn.toLowerCase()
+  const lastName = ln.toLowerCase()
   return new Promise(function (resolve, reject) {
     sql.query(`SELECT * FROM Users WHERE firstName = "${firstName}" AND lastName = "${lastName}";`, (err, res) => {
       if (err) {
@@ -75,8 +92,10 @@ function eMailGenerator(firstName, lastName) {
         return
       }
       if (res.length) {
-        const eMail = firstName + "." + lastName + "." + res.length + "@societe.com"
-        resolve(eMail)
+        const eMail = res[length-1]
+
+        const newEMail = firstName + "." + lastName + "." + res.length + "@societe.com"
+        resolve(newEMail)
         return
       }
       const eMail = firstName + "." + lastName + "@societe.com"
@@ -88,29 +107,29 @@ function eMailGenerator(firstName, lastName) {
 
 function containFigure(password) {
   const regex = /[0-9]/
-  if(regex.exec(password) != null)
+  if (regex.exec(password) != null)
     return true
   return false
 }
 
 function containSpecial(password) {
   const regex = /[^A-Za-z0-9]/
-  if(regex.exec(password) != null)
+  if (regex.exec(password) != null)
     return true
   return false
 
 }
 
-function containLowCase(password){
-  const regex= /[a-z]/
-  if(regex.exec(password)!= null)
+function containLowCase(password) {
+  const regex = /[a-z]/
+  if (regex.exec(password) != null)
     return true
   return false
 }
 
-function containUpperCase(password){
-  const regex= /[A-Z]/
-  if(regex.exec(password)!= null)
+function containUpperCase(password) {
+  const regex = /[A-Z]/
+  if (regex.exec(password) != null)
     return true
   return false
 }
@@ -122,25 +141,25 @@ function checkPassword(password) {
     return false
   if (!containSpecial(password))
     return false
-  if(!containLowCase(password))
+  if (!containLowCase(password))
     return false
-  if(!containUpperCase(password))
+  if (!containUpperCase(password))
     return false
   return true
 }
 
-function emptyInfos(firstName, lastName, password, passwordConfirm, dept, numberTeam){
-  if(firstName === undefined)
+function emptyInfos(firstName, lastName, password, passwordConfirm, dept, numberTeam) {
+  if (firstName === undefined)
     return "empty first name !"
-  if(lastName === undefined)
+  if (lastName === undefined)
     return "empty last name !"
-  if(password === undefined)
+  if (password === undefined)
     return "empty password !"
-  if(passwordConfirm === undefined)
+  if (passwordConfirm === undefined)
     return "empty password confirmation !"
-  if(dept === undefined)
+  if (dept === undefined)
     return "empty dept !"
-  if(numberTeam === undefined)
+  if (numberTeam === undefined)
     return "empty number team !"
   return 0
 }
@@ -150,11 +169,11 @@ function emptyInfos(firstName, lastName, password, passwordConfirm, dept, number
 User.createNewUser = function (firstName, lastName, password, passwordConfirm, dept, numberTeam) {
   return new Promise(async function (resolve, reject) {
     const emptyInfo = emptyInfos(firstName, lastName, password, passwordConfirm, dept, numberTeam)
-    if(emptyInfo != 0){
+    if (emptyInfo != 0) {
       reject(emptyInfo)
       return
     }
-    if(passwordConfirm != password){
+    if (passwordConfirm != password) {
       reject("please enter the same password twice")
       return
     }
@@ -163,21 +182,84 @@ User.createNewUser = function (firstName, lastName, password, passwordConfirm, d
       .catch((err) => {
         reject(err)
         return
-    })
+      })
 
     if (!checkPassword(password)) {
       reject("try an other password")
       return
     }
-    
+
     const idTeam = await Team.getTeamByDeptNumber(dept, numberTeam).catch((err) => {
       reject(err)
       return
     })
-    resolve(idTeam)
-    return
+    console.log(idTeam)
+    if (idTeam === undefined)
+      return
+
+    sql.query(`INSERT INTO Users(id, lastName, firstName, eMail, password, idTeam) 
+    VALUES (0,'${lastName}','${firstName}','${eMail}','${password}',${idTeam.id});`,
+    (err) => {
+      if (err) {
+        reject(err)
+      }
+      resolve("OK!")
+    })
   })
 }
+
+function createNewUserWithoutTeam(firstName, lastName, password, passwordConfirm, dept) {
+  return new Promise(async function (resolve, reject) {
+    //numberTeam unused in this function
+    const emptyInfo = emptyInfos(firstName, lastName, password, passwordConfirm, dept, -1)
+    if (emptyInfo != 0) {
+      reject(emptyInfo)
+      return
+    }
+    if (passwordConfirm != password) {
+      reject("please enter the same password twice")
+      return
+    }
+
+    const eMail = await eMailGenerator(firstName, lastName)
+      .catch((err) => {
+        reject(err)
+        return
+      })
+
+    if (!checkPassword(password)) {
+      reject("try an other password")
+      return
+    }
+    sql.query(`INSERT INTO Users(id, lastName, firstName, eMail, password, idTeam) 
+    VALUES (0,'${lastName}','${firstName}','${eMail}','${password}',NULL);`,
+      (err) => {
+        if (err) {
+          reject(err)
+        }
+        resolve(eMail)
+      })
+
+  })
+}
+
+User.createNewUserAndTeam = function (firstName, lastName, password, passwordConfirm, dept) {
+  return new Promise(async function (resolve, reject) {
+    const eMail = await createNewUserWithoutTeam(firstName, lastName, password, passwordConfirm, dept).catch(
+      (err) => {
+        reject(err)
+        return
+      })
+    const user = await User.getUserByEMail(eMail)
+    const idResp = user.id
+
+    const numberTeam = await Team.createNewTeam(idResp,dept)
+    const team = await Team.getTeamByDeptNumber(dept, numberTeam)
+    const idTeam = team.id
+    resolve(team)
+  })
+}
+
 
 //User.getUserByLastFirstName()
 
@@ -187,6 +269,26 @@ User.createNewUser = function (firstName, lastName, password, passwordConfirm, d
 //User.deleteUser()
 
 
+//User.getAllUser()
+
+User.getUsersByDept = function (dept){
+  return new Promise( function (resolve, reject) {
+    sql.query(`SELECT * FROM Users WHERE idTeam IN ( 
+                SELECT id FROM Teams WHERE dept = "${dept}"
+              );`,(err,res) => {
+                if (err) {
+                  reject(err)
+                  return
+                }
+                if(res.length){
+                  resolve(res)
+                  return
+                }
+                reject("not Found users in this dept")
+
+              })
+  })
+}
 
 
 
