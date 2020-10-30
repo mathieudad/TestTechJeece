@@ -1,22 +1,14 @@
-let fs = require('fs')
-let EventEmitter = require('events')
+const express = require('express')
+const app = express()
+const port = 4000
 
-let app = require('./app').start(4000)
-const nvx = new EventEmitter()
+app.get('/create', (req, res) => {
+  res.set('Content-Type', 'text/html');
+  res.sendfile('create.html')
+})
 
-app.on('root', function(response){
-
-  fs.readFile('index.html', (err,data) => {
-
-    if (err) throw err
-    
-    response.writeHead(200, {
-      'Content-type': 'text/html; charset=utf-8;'
-    })
-
-    response.end(data)
-
-  })
+app.listen(port, () => {
+  console.log("App is on")
 })
 
 

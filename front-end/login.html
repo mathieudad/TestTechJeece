@@ -41,7 +41,7 @@
         input[type=submit]:hover {
             background-color: white;
             color: #1818bb;
-            border: 1px solid #18b6bb;
+            border: 1px solid #fff;
         }
         input[type=text], input[type=password], input[type=email] {
             width: 100%;
@@ -91,7 +91,7 @@
     </script>
 </head>
 
-<body style="background-color: #18b6bb;" onload="initElement();">
+<body style="background-color: #fff;" onload="initElement();">
     <div>
         <section id="affichage">
             <h1>
@@ -104,15 +104,15 @@
         <div class="connexion">
             <strong><em>Connectez-vous :</em></strong>
             <section class="carre">
-                <form>
+            <form method="post" action="../back-end/lib/server.js">
                 <div id="connexion">
                     <label for="name"><strong>Adresse email :</strong></label>
                     <br/>
-                    <input type="email" id="user" placeholder="Entrer le nom d'utilisateur" name="pseudo" required minlength="4" maxlength="20" size="20" required>
+                    <input type="email" id="user" placeholder="Entrer le nom d'utilisateur" name="eMail" required minlength="4" maxlength="25" size="25" required>
                     <br/><br/>
                     <label for="name"><strong>Mot de passe :</strong></label>
                     <br/>
-                    <input type="text" id="password" placeholder="Entrer le mot de passe" name="password" required minlength="4" maxlength="20" size="20" required>
+                    <input type="password" id="password" placeholder="Entrer le mot de passe" name="password" required minlength="4" maxlength="20" size="20" required>
                 </div>
                 <br/><br/>
                 <input type="submit" id='submit' value='Connexion'>
@@ -120,7 +120,7 @@
             </section>
             <section class="inscription">
                 Vous n'avez pas de compte ?<br/>
-                Inscrivez-vous <a href="index2.html">ici!</a>
+                Inscrivez-vous <a href="create.html">ici!</a>
             </section>
         </div>
 
