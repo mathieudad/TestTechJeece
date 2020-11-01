@@ -1,22 +1,33 @@
-let fs = require('fs')
-let EventEmitter = require('events')
+const express = require('express')
+const app = express()
+const port = 4000
 
-let app = require('./app').start(4000)
-const nvx = new EventEmitter()
+var bodyParser = require('body-parser');
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+const fetch = require("node-fetch");
 
-app.on('root', function(response){
+app.get('/create', (req, res) => {
+  res.set('Content-Type', 'text/html');
+  res.sendfile('create.html')
+})
 
-  fs.readFile('index.html', (err,data) => {
+app.post('/create',(req, res) => {
+  console.log(req.body)
+  res.send("Formulaire bien envoye")
 
-    if (err) throw err
-    
-    response.writeHead(200, {
-      'Content-type': 'text/html; charset=utf-8;'
-    })
-
-    response.end(data)
-
+  fetch("http://localhost:3000/create", {
+    method: "post",
+    body: JSON.stringify(req.body),
+    headers: { 'Content-Type': 'application/json' },
   })
+  .then(res => res.json())
+  .then(json => console.log(json));
+  
+})
+
+app.listen(port, () => {
+  console.log("App is on")
 })
 
 

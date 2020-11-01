@@ -12,13 +12,13 @@
         }
         #affichage{
             font-family : Verdana, sans-serif;
-            color : #18b6bb;
+            color : #1818bb;
             margin-top : 1.2em;
             text-align: center;
         }
         .information{
             border-radius: 1em;
-            border : 2px solid #18b6bb;
+            border : 2px solid #1818bb;
             margin : 1em 1em 1em 0em;
             padding : 30px 0px 30px 0px;
         }
@@ -27,11 +27,11 @@
             padding: 10px 20px;
             margin: 1em 0 1em 0;
             display: inline-block;
-            border: 1px solid #ccc;
+            border: 1px solid black;
         }
         input[type=submit] {
-            background-color: #1818bb;
-            color: white;
+            background-color: #fff;
+            color: #1818bb;
             padding: 14px 20px;
             margin: 0.2em 0;
             border: none;
@@ -39,16 +39,16 @@
             width: 50%;
         }
         input[type=submit]:hover {
-            background-color: white;
-            color: #1818bb;
-            border: 1px solid #18b6bb;
+            background-color: #1818bb;
+            color: #fff;
+            border: 1px solid;
         }
         input[type=password]{
             width: 50%;
             padding: 10px 20px;
             margin: 1em 0 1em 0;
             display: inline-block;
-            border: 1px solid #ccc;
+            border: 1px solid black;
         }
         #choix{
             -webkit-appearance: none;
@@ -56,7 +56,7 @@
 	        appearance: none;
 	        width: 57%; 
 	        height: auto;
-	        border: 0; 
+	        border: 0;
 	        margin: 0.6em 0 0.6em 0;
 	        padding: .75em;
 	        border-radius: 0;
@@ -65,40 +65,40 @@
         }
     </style>
     <script LANGUAGE="JavaScript">
-        var nom,prenom,dptm,equipe,mdp,mdp_bis;
+        var firstName,lastName,dept,team,password,passwordConfirm;
         
         document.addEventListener('DOMContentLoaded', function(){
-            document.querySelector('input[name="prenom"]').onchange=changeEventPrenom;
-            document.querySelector('input[name="nom"]').onchange=changeEventNom;
-            document.querySelector('select[name="dptm"]').onchange=changeEventDptm;
-            document.querySelector('input[name="equipe"]').onchange=changeEventEquipe;
-            document.querySelector('input[name="mdp"]').onchange=changeEventMdp;
-            document.querySelector('input[name="mdp_bis"]').onchange=changeEventMdp_bis;
+            document.querySelector('input[name="lastName"]').onchange=changeEventPrenom;
+            document.querySelector('input[name="firstName"]').onchange=changeEventNom;
+            document.querySelector('select[name="dept"]').onchange=changeEventDptm;
+            document.querySelector('input[name="team"]').onchange=changeEventEquipe;
+            document.querySelector('input[name="password"]').onchange=changeEventMdp;
+            document.querySelector('input[name="passwordConfirm"]').onchange=changeEventMdp_bis;
         },false);
 
         function changeEventPrenom(event){
             if(event.target.value)
-                prenom = event.target.value;
+                firstName = event.target.value;
         }
         function changeEventNom(event){
             if(event.target.value)
-                nom = event.target.value;
+                lastName = event.target.value;
         }
         function changeEventDptm(event){
             if(event.target.value)
-                dptm = event.target.value;
+                dept = event.target.value;
         }
         function changeEventEquipe(event){
             if(event.target.value)
-                equipe = event.target.value;
+                team = event.target.value;
         }
         function changeEventMdp(event){
             if(event.target.value)
-                mdp = event.target.value;
+                password = event.target.value;
         }
         function changeEventMdp_bis(event){
             if(event.target.value)
-                mdp_bis = event.target.value;
+                passwordConfirm = event.target.value;
         }
 
         function initElement(){
@@ -107,7 +107,7 @@
         }
         
         function getData(){
-            console.log("nom = "+nom+" prenom = "+prenom+" dptm = "+dptm);
+            console.log("nom = "+lastName+" prenom = "+firstName+" dptm = "+dept);
         }
     </script>
 </head>
@@ -116,14 +116,14 @@
         Inscrivez-vous !
     </h2>
 </header>
-<body style="background-color: #1818bb;" onload="initElement();">
+<body style="background-color: #fff;" onload="initElement();">
     <div>
         <div class="connexion">
-        <form action="/somewhereElse" method="POST">
+        <form action="http://localhost:4000/create" method="post">
             <div class="information">
-                <input type="text" placeholder="Entrer votre Prenom" name="prenom" required minlength="4" maxlength="20" size="20" required>
-                <input type="text" placeholder="Entrer votre Nom" name="nom" required minlength="4" maxlength="20" size="20" required>
-                <select type="text" id="choix" name="dptm">
+                <input type="text" placeholder="Entrer votre Prenom" name="firstName" required minlength="4" maxlength="20" size="20" required>
+                <input type="text" placeholder="Entrer votre Nom" name="lastName" required minlength="4" maxlength="20" size="20" required>
+                <select type="text" id="choix" name="dept">
                     <option value="">--Please choose an option--</option>
                     <option value="business">Business</option>
                     <option value="rh">Ressources humaines (RH)</option>
@@ -132,9 +132,9 @@
                     <option value="compliance">Compliance</option>
                     <option value="finance">Finance</option>
                 </select>
-                <input type="text" placeholder="Entrer votre Numero d'équipe" name="equipe" required minlength="4" maxlength="20" size="20" required>
-                <input type="password" placeholder="Entrer votre Mot de Passe" name="mdp" required minlength="4" maxlength="20" size="20" required>
-                <input type="password" placeholder="Confirmez votre Mot de Passe" name="mdp_bis" required minlength="4" maxlength="20" size="20" required>
+                <input type="text" placeholder="Entrer votre Numero d'équipe" name="team" required minlength="4" maxlength="20" size="20" required>
+                <input type="password" placeholder="Entrer votre Mot de Passe" name="password" required minlength="4" maxlength="20" size="20" required>
+                <input type="password" placeholder="Confirmez votre Mot de Passe" name="passwordConfirm" required minlength="4" maxlength="20" size="20" required>
             </div>
             <section class="inscription">
                 <input type="submit" id='submit' value="S'inscrire">

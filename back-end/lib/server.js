@@ -11,7 +11,7 @@ app.use(bodyParser.json())
 // parse requests of content-type: application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.get('/users/:userId', userController.read_a_user)
+app.get('/users/:userId', userController.read_a_user)///
 
 app.post('/login',userController.read_a_login)
 
