@@ -86,21 +86,28 @@ function eMailGenerator(fn, ln) {
   const firstName = fn.toLowerCase()
   const lastName = ln.toLowerCase()
   return new Promise(function (resolve, reject) {
-    sql.query(`SELECT * FROM Users WHERE firstName = "${firstName}" AND lastName = "${lastName}";`, (err, res) => {
+    sql.query(`SELECT eMail FROM Users WHERE firstName = "${firstName}" AND lastName = "${lastName}";`, (err, res) => {
       if (err) {
         reject(err)
-        return
+        
       }
-      if (res.length) {
-        //const eMail = res[length-1]
-
-        const eMail = firstName + "." + lastName + "." + res.length + "@societe.com"
+      else if( res.length === 1){
+        const eMail = firstName + "." + lastName + "." + 1 + "@societe.com"
         resolve(eMail)
-        return
       }
+      else if(res.length>1) {
+        //const eMail = res[length-1]
+        const str = (res[res.length-1].eMail).slice(0,(res[res.length-1].eMail).lastIndexOf("."))
+        const str2 = str.slice(str.lastIndexOf("."),str.length)
+        var number = str2.charAt(1)
+        number ++
+        const eMail = firstName + "." + lastName + "." + number + "@societe.com"
+        resolve(eMail)
+      }
+      else{
       const eMail = firstName + "." + lastName + "@societe.com"
       resolve(eMail)
-      return
+      }
     })
   })
 }
@@ -165,7 +172,6 @@ function emptyInfos(firstName, lastName, password, passwordConfirm, dept, number
 }
 
 
-
 User.createNewUser = function (firstName, lastName, password, passwordConfirm, dept, numberTeam) {
   return new Promise(async function (resolve, reject) {
     const emptyInfo = emptyInfos(firstName, lastName, password, passwordConfirm, dept, numberTeam)
@@ -203,7 +209,7 @@ User.createNewUser = function (firstName, lastName, password, passwordConfirm, d
       if (err) {
         reject(err)
       }
-      resolve("OK!")
+      resolve(eMail)
     })
   })
 }
@@ -243,20 +249,41 @@ function createNewUserWithoutTeam(firstName, lastName, password, passwordConfirm
   })
 }
 
+function updateTeamOfAUser(eMail, idTeam){
+  return new Promise(function(resolve,reject){
+    sql.query(`UPDATE Users SET idTeam = ${idTeam} WHERE eMail = "${eMail}";`,(err, res) => {
+      if (err) {
+        reject(err)
+        return
+      }
+      resolve(res.affectedRows)
+      return
+    })
+  })
+}
+
 User.createNewUserAndTeam = function (firstName, lastName, password, passwordConfirm, dept) {
   return new Promise(async function (resolve, reject) {
+    //cree un user sans team
     const eMail = await createNewUserWithoutTeam(firstName, lastName, password, passwordConfirm, dept).catch(
       (err) => {
         reject(err)
         return
       })
+  //recup son id
     const user = await User.getUserByEMail(eMail)
     const idResp = user.id
-
+    //cree une team avec lui pour responsable 
     const numberTeam = await Team.createNewTeam(idResp,dept)
+    //recupere l'id de sa team
     const team = await Team.getTeamByDeptNumber(dept, numberTeam)
-    const idTeam = team.id
-    resolve(team)
+    //update l'user avec son idteam
+    const up = await updateTeamOfAUser(eMail, team.id).catch(
+      (err) => {
+        reject(err)
+        return
+      })
+    resolve(up)
   })
 }
 

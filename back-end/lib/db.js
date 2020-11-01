@@ -3,10 +3,10 @@ var mysql = require('mysql');
 console.log('Get connection ...');
  
 var conn = mysql.createConnection({
-  database: 'testtech',
+  database: 'TestTech',
   host: "localhost",
   user: "root",
-  password: ""
+  password: "rootroot"
 });
  
 conn.connect(err => {
