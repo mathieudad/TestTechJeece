@@ -57,37 +57,11 @@
             font-family: Verdana, sans-serif;
         }
         a:hover{
-            color : #fff;
+            color : #1818bb;
         }
     </style>
     <script LANGUAGE="JavaScript">
-        var user,password;
-        
-        document.addEventListener('DOMContentLoaded', function(){
-            document.querySelector('input[name="pseudo"]').onchange=changeEventUser;
-        },false);
-
-        document.addEventListener('DOMContentLoaded', function(){
-            document.querySelector('input[name="password"]').onchange=changeEventPassword;
-        },false);
-
-        function changeEventUser(event){
-            if(event.target.value)
-                user = event.target.value;
-        }
-        function changeEventPassword(event){
-            if(event.target.value)
-                password = event.target.value;
-        }
-
-        function initElement(){
-            var elt = document.getElementById('submit');
-            elt.onclick = getData;
-        }
-        
-        function getData(){
-            console.log("password = "+password+" user = "+user);
-        }
+       
     </script>
 </head>
 
@@ -104,7 +78,7 @@
         <div class="connexion">
             <strong><em>Connectez-vous :</em></strong>
             <section class="carre">
-            <form method="post" action="../back-end/lib/server.js">
+            <form method="post" action="http://localhost:4000/login">
                 <div id="connexion">
                     <label for="name"><strong>Adresse email :</strong></label>
                     <br/>
@@ -120,7 +94,7 @@
             </section>
             <section class="inscription">
                 Vous n'avez pas de compte ?<br/>
-                Inscrivez-vous <a href="create.html">ici!</a>
+                Inscrivez-vous <a href="http://localhost:4000/create">ICI</a>
             </section>
         </div>
 

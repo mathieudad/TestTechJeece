@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <style>
+        #select{
+            text-align: center;
+            text-align-last: center;
+        }
+    </style>
+    <script>
+
+    </script>
+</head>
+
+<body>
+    <header>
+        <nav class="nav nav-pills nav-justified">
+            <a class="nav-link active" href="http://localhost:4000/home_page">Chercher un profil</a>
+            <a class="nav-link" href="http://localhost:4000/chat">Chat en ligne</a>
+            <a class="nav-link" href="http://localhost:4000/profil">Votre Profil</a>
+        </nav>
+    </header>
+    <br/>
+    <form>
+        <select class="form-control form-control-lg" id="select">
+            <option>--Selectionner un departement--</option>
+            <option value="">--Please choose an option--</option>
+            <option value="business">Business</option>
+            <option value="rh">Ressources humaines (RH)</option>
+            <option value="sp">Support technique</option>
+            <option value="marketing">Marketing</option>
+            <option value="compliance">Compliance</option>
+            <option value="finance">Finance</option>
+        </select>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Entrer le numero d'une equipe" aria-label="Entrer le numero d'une equipe">
+        </div>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Entrer le nom d'une personne" aria-label="Recipient's username" aria-describedby="button-addon2">
+            <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" id="button-addon2">Rechercher</button>
+            </div>
+         </div>
+    </form>
+</body>
+</html>

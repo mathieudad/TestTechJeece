@@ -12,9 +12,32 @@ app.get('/create', (req, res) => {
   res.sendfile('create.html')
 })
 
+app.get('/profil', (req, res) => {
+  res.set('Content-Type', 'text/html');
+  res.sendfile('profil.html')
+})
+
+app.get('/home_page', (req, res) => {
+  res.set('Content-Type', 'text/html');
+  res.sendfile('home_page.html')
+})
+
+app.get('/login', (req, res) => {
+  res.set('Content-Type', 'text/html');
+  res.sendfile('login.html')
+})
+
+app.get('/chat', (req, res) => {
+  res.set('Content-Type', 'text/html');
+  res.sendfile('chat.html')
+})
+
+app.get('/edit_profil', (req, res) => {
+  res.set('Content-Type', 'text/html');
+  res.sendfile('edit_profil.html')
+})
+
 app.post('/create',(req, res) => {
-  console.log(req.body)
-  res.send("Formulaire bien envoye")
 
   fetch("http://localhost:3000/create", {
     method: "post",
@@ -22,8 +45,34 @@ app.post('/create',(req, res) => {
     headers: { 'Content-Type': 'application/json' },
   })
   .then(res => res.json())
-  .then(json => console.log(json));
-  
+  .then(json => {
+    if(json=="OK"){
+      console.log("it's good");
+    }
+    else{
+      console.log(json);
+      res.sendfile('create.html')
+    }
+  });
+})
+
+app.post('/login',(req, res) => {
+
+  fetch("http://localhost:3000/login", {
+    method: "post",
+    body: JSON.stringify(req.body),
+    headers: { 'Content-Type': 'application/json' },
+  })
+  .then(res => res.json())
+  .then(json => {
+    if(json=="OK"){
+      console.log("it's good");
+    }
+    else{
+      console.log(json);
+      res.sendfile('login.html')
+    }
+  });
 })
 
 app.listen(port, () => {

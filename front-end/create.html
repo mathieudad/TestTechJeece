@@ -62,53 +62,18 @@
 	        border-radius: 0;
 	        overflow: hidden;
 	        text-overflow: ellipsis;
+            text-align: center;
+            text-align-last: center;
+        }
+        label{
+            font-size : 0.8em;
+        }
+        input[type=checkbox]{
+            display: inline-block;
         }
     </style>
     <script LANGUAGE="JavaScript">
-        var firstName,lastName,dept,team,password,passwordConfirm;
-        
-        document.addEventListener('DOMContentLoaded', function(){
-            document.querySelector('input[name="lastName"]').onchange=changeEventPrenom;
-            document.querySelector('input[name="firstName"]').onchange=changeEventNom;
-            document.querySelector('select[name="dept"]').onchange=changeEventDptm;
-            document.querySelector('input[name="team"]').onchange=changeEventEquipe;
-            document.querySelector('input[name="password"]').onchange=changeEventMdp;
-            document.querySelector('input[name="passwordConfirm"]').onchange=changeEventMdp_bis;
-        },false);
-
-        function changeEventPrenom(event){
-            if(event.target.value)
-                firstName = event.target.value;
-        }
-        function changeEventNom(event){
-            if(event.target.value)
-                lastName = event.target.value;
-        }
-        function changeEventDptm(event){
-            if(event.target.value)
-                dept = event.target.value;
-        }
-        function changeEventEquipe(event){
-            if(event.target.value)
-                team = event.target.value;
-        }
-        function changeEventMdp(event){
-            if(event.target.value)
-                password = event.target.value;
-        }
-        function changeEventMdp_bis(event){
-            if(event.target.value)
-                passwordConfirm = event.target.value;
-        }
-
-        function initElement(){
-            var elt = document.getElementById('submit');
-            elt.onclick = getData;
-        }
-        
-        function getData(){
-            console.log("nom = "+lastName+" prenom = "+firstName+" dptm = "+dept);
-        }
+       
     </script>
 </head>
 <header id="affichage">
@@ -132,7 +97,9 @@
                     <option value="compliance">Compliance</option>
                     <option value="finance">Finance</option>
                 </select>
-                <input type="text" placeholder="Entrer votre Numero d'équipe" name="team" required minlength="4" maxlength="20" size="20" required>
+                <input type="text" placeholder="Entrer votre Numero d'équipe" name="team" required minlength="1" maxlength="20" size="20" required>
+                <input type="checkbox" name="create_team" value="create_team" checked>
+                <label for="abonews">Creer une nouvelle team</label>
                 <input type="password" placeholder="Entrer votre Mot de Passe" name="password" required minlength="4" maxlength="20" size="20" required>
                 <input type="password" placeholder="Confirmez votre Mot de Passe" name="passwordConfirm" required minlength="4" maxlength="20" size="20" required>
             </div>
