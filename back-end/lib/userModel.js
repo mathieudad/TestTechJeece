@@ -1,12 +1,11 @@
-const { resolve } = require('path')
 const sql = require('./db')
 const Team = require('./teamModel')
 
 
 const User = function (user, team) {
-  this.lastName = user.lastName
-  this.firstName = user.firstName
-  this.eMail = user.eMail
+  this.lastName = user.last_name
+  this.firstName = user.first_name
+  this.eMail = user.e_mail
   this.password = user.password
   this.team = team
 }
@@ -18,8 +17,7 @@ User.getUserById = function (userId) {
     sql.query(`SELECT * FROM users WHERE id = ${userId};`,
       (err, res) => {
         if (err) {
-          console.log("error: ", err)
-          reject(Error(err))
+          reject(err)
           return
         }
 
@@ -40,7 +38,7 @@ User.getUserById = function (userId) {
 
 User.getUserByLogin = function (eMail, password) {
   return new Promise(function (resolve, reject) {
-    sql.query(`SELECT * FROM Users WHERE eMail = "${eMail}";`,
+    sql.query(`SELECT * FROM users WHERE e_mail = "${eMail}";`,
       (err, res) => {
         if (err) {
           reject(err)
@@ -66,7 +64,7 @@ User.getUserByLogin = function (eMail, password) {
 
 User.getUserByEMail = function (eMail) {
   return new Promise(function (resolve, reject) {
-    sql.query(`SELECT * FROM Users WHERE eMail = "${eMail}";`,
+    sql.query(`SELECT * FROM users WHERE e_mail = "${eMail}";`,
       (err, res) => {
         if (err) {
           reject(err)
@@ -76,8 +74,8 @@ User.getUserByEMail = function (eMail) {
         if (res.length) {
           resolve(res[0])
           return
-        }
-        reject("user not found by eMail")
+        }else
+          reject("user not found at this eMail")
       })
   })
 }
@@ -86,27 +84,27 @@ function eMailGenerator(fn, ln) {
   const firstName = fn.toLowerCase()
   const lastName = ln.toLowerCase()
   return new Promise(function (resolve, reject) {
-    sql.query(`SELECT eMail FROM Users WHERE firstName = "${firstName}" AND lastName = "${lastName}";`, (err, res) => {
+    sql.query(`SELECT e_mail FROM users WHERE first_name = "${firstName}" AND last_name = "${lastName}";`, (err, res) => {
       if (err) {
         reject(err)
-        
+
       }
-      else if( res.length === 1){
+      else if (res.length === 1) {
         const eMail = firstName + "." + lastName + "." + 1 + "@societe.com"
         resolve(eMail)
       }
-      else if(res.length>1) {
+      else if (res.length > 1) {
         //const eMail = res[length-1]
-        const str = (res[res.length-1].eMail).slice(0,(res[res.length-1].eMail).lastIndexOf("."))
-        const str2 = str.slice(str.lastIndexOf("."),str.length)
+        const str = (res[res.length - 1].e_mail).slice(0, (res[res.length - 1].e_mail).lastIndexOf("."))
+        const str2 = str.slice(str.lastIndexOf("."), str.length)
         var number = str2.charAt(1)
-        number ++
+        number++
         const eMail = firstName + "." + lastName + "." + number + "@societe.com"
         resolve(eMail)
       }
-      else{
-      const eMail = firstName + "." + lastName + "@societe.com"
-      resolve(eMail)
+      else {
+        const eMail = firstName + "." + lastName + "@societe.com"
+        resolve(eMail)
       }
     })
   })
@@ -203,14 +201,14 @@ User.createNewUser = function (firstName, lastName, password, passwordConfirm, d
     if (idTeam === undefined)
       return
 
-    sql.query(`INSERT INTO Users(id, lastName, firstName, eMail, password, idTeam) 
+    sql.query(`INSERT INTO users(id, last_name, first_name, e_mail, password, id_team) 
     VALUES (0,'${lastName}','${firstName}','${eMail}','${password}',${idTeam.id});`,
-    (err) => {
-      if (err) {
-        reject(err)
-      }
-      resolve(eMail)
-    })
+      (err) => {
+        if (err) {
+          reject(err)
+        }
+        resolve(eMail)
+      })
   })
 }
 
@@ -237,7 +235,7 @@ function createNewUserWithoutTeam(firstName, lastName, password, passwordConfirm
       reject("try an other password")
       return
     }
-    sql.query(`INSERT INTO Users(id, lastName, firstName, eMail, password, idTeam) 
+    sql.query(`INSERT INTO users(id, last_name, first_name, e_mail, password, id_team) 
     VALUES (0,'${lastName}','${firstName}','${eMail}','${password}',NULL);`,
       (err) => {
         if (err) {
@@ -249,9 +247,9 @@ function createNewUserWithoutTeam(firstName, lastName, password, passwordConfirm
   })
 }
 
-function updateTeamOfAUser(eMail, idTeam){
-  return new Promise(function(resolve,reject){
-    sql.query(`UPDATE Users SET idTeam = ${idTeam} WHERE eMail = "${eMail}";`,(err, res) => {
+function updateTeamOfAUser(eMail, idTeam) {
+  return new Promise(function (resolve, reject) {
+    sql.query(`UPDATE users SET id_team = ${idTeam} WHERE e_mail = "${eMail}";`, (err, res) => {
       if (err) {
         reject(err)
         return
@@ -270,11 +268,11 @@ User.createNewUserAndTeam = function (firstName, lastName, password, passwordCon
         reject(err)
         return
       })
-  //recup son id
+    //recup son id
     const user = await User.getUserByEMail(eMail)
     const idResp = user.id
     //cree une team avec lui pour responsable 
-    const numberTeam = await Team.createNewTeam(idResp,dept)
+    const numberTeam = await Team.createNewTeam(idResp, dept)
     //recupere l'id de sa team
     const team = await Team.getTeamByDeptNumber(dept, numberTeam)
     //update l'user avec son idteam
@@ -287,10 +285,67 @@ User.createNewUserAndTeam = function (firstName, lastName, password, passwordCon
   })
 }
 
+function testMatch(res, name) {
+  var match = new Array()
+  name = name.toLowerCase()
+  var j = 0
+  for (i = 0; i < res.length; i++) {
+    const firstName = (res[i].first_name).toLowerCase()
+    const lastName = (res[i].last_name).toLowerCase()
+    if (name.includes(firstName) && name.includes(lastName)) {
+      match[j] = res[i]
+      j -= -1
+    }
+  }
+  if (!match.length) {
+    for (i = 0; i < res.length; i++) {
+      const firstName = (res[i].first_name).toLowerCase()
+      const lastName = (res[i].last_name).toLowerCase()
+      if (name.includes(firstName) || name.includes(lastName) ||
+        firstName.includes(name) || lastName.includes(name)) {
+        match[j] = res[i]
+        j -= -1
+      }
+    }
+  }
+  return match
+}
 
-//User.getUserByLastFirstName()
+User.getUserByLastOrFirstName = function (name,dept) {
+  return new Promise(function (resolve, reject) {
+    sql.query(`SELECT * FROM users WHERE id_team IN (SELECT id FROM teams WHERE dept = "${dept}");`,
+      (err, res) => {
+        if (err) {
+          reject(err)
+          return
+        }
+        else if (res.length) {
+          const match = testMatch(res, name)
+          resolve(match)
+          return
+        } else {
+          reject("no user at this name")
+        }
+      })
+  })
+}
 
-//User.getUsersByTeam()
+User.getUsersByTeam = function (number, dept){
+  return new Promise(function(resolve, reject){
+    sql.query(`SELECT * FROM user WHERE id_team = (SELECT id FROM teams WHERE number = ${number} AND dept = "${dept}")`,
+    (err, res) => {
+      if (err) {
+        reject(err)
+        return
+      }
+      if(res.length)
+        resolve(res)
+      else 
+        reject("no users at this team")
+      })
+      
+  })
+}
 
 
 //User.deleteUser()
@@ -298,35 +353,36 @@ User.createNewUserAndTeam = function (firstName, lastName, password, passwordCon
 
 //User.getAllUser()
 
-User.getUsersByDept = function (dept){
-  return new Promise( function (resolve, reject) {
-    sql.query(`SELECT * FROM Users WHERE idTeam IN ( 
-                SELECT id FROM Teams WHERE dept = "${dept}"
-              );`,(err,res) => {
-                if (err) {
-                  reject(err)
-                  return
-                }
-                if(res.length){
-                  resolve(res)
-                  return
-                }
-                reject("not Found users in this dept")
 
-              })
+User.getUsersByDept = function (dept) {
+  return new Promise(function (resolve, reject) {
+    sql.query(`SELECT * FROM users WHERE id_team IN ( 
+                SELECT id FROM teams WHERE dept = "${dept}"
+              );`, (err, res) => {
+      if (err) {
+        reject(err)
+        return
+      }
+      if (res.length) {
+        resolve(res)
+        return
+      }
+      reject("not Found users in this dept")
+
+    })
   })
 }
 
 
 
 const Resp = function (user) {
-  this.lastName = user.lastName
-  this.firstName = user.firstName
+  this.lastName = user.last_name
+  this.firstName = user.first_name
 }
 
 Resp.getRespById = function (idResp) {
   return new Promise(function (resolve, reject) {
-    sql.query(`SELECT lastName, firstName FROM Users WHERE id = ${idResp};`,
+    sql.query(`SELECT last_name, first_name FROM users WHERE id = ${idResp};`,
       (err, res) => {
         if (err) {
           console.log("error: ", err)

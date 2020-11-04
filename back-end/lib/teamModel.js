@@ -10,7 +10,7 @@ const Team = function (team, resp) {
 
 Team.getTeamById = function (teamId) {
   return new Promise(function (resolve, reject) {
-    sql.query(`SELECT * FROM Teams WHERE id = ${teamId};`,
+    sql.query(`SELECT * FROM teams WHERE id = ${teamId};`,
       (err, res) => {
         if (err) {
           reject(err)
@@ -32,11 +32,10 @@ Team.getTeamById = function (teamId) {
 
 //Team.getAllTeams()
 
-//Team.getTeamsByDept()
 
 Team.getTeamByDeptNumber = function (dept, number) {
   return new Promise(function (resolve, reject) {
-    sql.query(`SELECT * FROM Teams WHERE dept = "${dept}" AND number = ${number};`,
+    sql.query(`SELECT * FROM teams WHERE dept = "${dept}" AND number = ${number};`,
       (err, res) => {
         if (err) {
           reject(err)
@@ -58,7 +57,7 @@ Team.getTeamByDeptNumber = function (dept, number) {
 //recupere la derniere equipe pour un departement donné et retourne le numero suivant
 function findMaxNumberOfDept(dept){
   return new Promise(function (resolve, reject) {
-    sql.query(`SELECT MAX(number) as maxNumber FROM Teams WHERE dept = "${dept}";`,
+    sql.query(`SELECT MAX(number) as max_number FROM teams WHERE dept = "${dept}";`,
     (err,res)=>{
       if(err){
         reject(err)
@@ -66,7 +65,7 @@ function findMaxNumberOfDept(dept){
       }
 
       if(res.length){
-        resolve(res[0].maxNumber + 1)
+        resolve(res[0].max_number + 1)
         return
       }
       
@@ -82,7 +81,7 @@ Team.createNewTeam =  function (idResp, dept){
       reject(err)
       return
     })
-    sql.query(`INSERT INTO Teams(id, number, idResp, dept) 
+    sql.query(`INSERT INTO teams(id, number, id_resp, dept) 
     VALUES (0,${number},${idResp},'${dept}');`,
     (err) => {
       if (err) {
@@ -94,7 +93,6 @@ Team.createNewTeam =  function (idResp, dept){
   
 }
 
-// Team.deleteTeam()
 
 
 

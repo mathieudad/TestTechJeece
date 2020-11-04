@@ -1,6 +1,5 @@
 var User = require('./userModel').User
 var Resp = require('./userModel').Resp
-const { getTeamById } = require('./teamModel')
 var Team = require('./teamModel')
 
 
@@ -9,11 +8,12 @@ exports.read_a_user = async function (req, res) {
         res.json(err)
     })
     if (!user) return
-    const team = await Team.getTeamById(user.idTeam).catch((err) => {
+    console.log(user.id_team)
+    const team = await Team.getTeamById(user.id_team).catch((err) => {
         res.json(err)
     })
     if (!team) return
-    const resp = await Resp.getRespById(team.idResp).catch((err) => {
+    const resp = await Resp.getRespById(team.id_resp).catch((err) => {
         res.json(err)
     })
     if (!resp) return
@@ -25,11 +25,11 @@ exports.read_a_login = async function (req, res) {
         res.json(err)
     })
     if (!user) return
-    const team = await Team.getTeamById(user.idTeam).catch((err) => {
+    const team = await Team.getTeamById(user.id_team).catch((err) => {
         res.json(err)
     })
     if (!team) return
-    const resp = await Resp.getRespById(team.idResp).catch((err) => {
+    const resp = await Resp.getRespById(team.id_resp).catch((err) => {
         res.json(err)
     })
     if (!resp) return
@@ -59,39 +59,46 @@ async function mapUser(user) {
     })
 } */
 
-exports.read_users_by_dept = async function (req, res) {
-    const users = await User.getUsersByDept(req.params.dept).catch((err) => {
-        res.json(err)
-    })
-    if (!users) return
+async function getRealUsers(users){
     const realUsers = new Array()
     for (i = 0; i < users.length; i++) {
-        const team = await Team.getTeamById(users[i].idTeam).catch((err) => {
+        const team = await Team.getTeamById(users[i].id_team).catch((err) => {
             return err
         })
         if (!team)
             return
-        const resp = await Resp.getRespById(team.idResp).catch((err) => {
+        const resp = await Resp.getRespById(team.id_resp).catch((err) => {
             return err
         })
         if (!resp) return
 
         realUsers[i] = new User(users[i], new Team(team, new Resp(resp)))
     }
-    res.json(realUsers)
+    return realUsers
 }
 
+exports.read_users_by_dept = async function (req, res) {
+    const users = await User.getUsersByDept(req.body.dept).catch((err) => {
+        res.json(err)
+    })
+    if (!users) return
+    res.json(await getRealUsers(users))
+}
 
-exports.create_user = async function (req, res) {
-    if (req.body.createTeam) {
-        const rep = await create_a_user(req.body.firstName, req.body.lastName,
-            req.body.password, req.body.passwordConfirm, req.body.dept, req.body.numberTeam)
-        res.json(rep)
-    } else {
-        const rep = await create_a_user_and_team(req.body.firstName, req.body.lastName,
-            req.body.password, req.body.passwordConfirm, req.body.dept)
-        res.json(rep)
-    }
+exports.read_user_by_name_and_dept = async function (req,res){
+    const users = await User.getUserByLastOrFirstName(req.body.name, req.body.dept).catch((err) =>{
+        res.json(err)
+    })
+    if(!users) return 
+    res.json(await getRealUsers(users))
+}
+
+exports.read_user_by_team= async function(req,res){
+    const users = await User.getUserByTeam(req.body.number, req.body.dept).catch((err) =>{
+        res.json(err)
+    })
+    if(!users) return 
+    res.json(await getRealUsers(users))
 }
 
 async function create_a_user(firstName, lastName, password, passwordConfirm, dept, numberTeam) {
@@ -102,7 +109,6 @@ async function create_a_user(firstName, lastName, password, passwordConfirm, dep
     return (eMail)
 
 }
-
 async function create_a_user_and_team(firstName, lastName,
     password, passwordConfirm, dept) {
     const user = await User.createNewUserAndTeam(firstName, lastName,
@@ -111,6 +117,17 @@ async function create_a_user_and_team(firstName, lastName,
         })
     return user
 
+}
+exports.create_user = async function (req, res) {
+    if (req.body.createTeam) {
+        const rep = await create_a_user(req.body.firstName, req.body.lastName,
+            req.body.password, req.body.passwordConfirm, req.body.dept, req.body.numberTeam)
+        res.json(rep)
+    } else {
+        const rep = await create_a_user_and_team(req.body.firstName, req.body.lastName,
+            req.body.password, req.body.passwordConfirm, req.body.dept)
+        res.json(rep)
+    }
 }
 
 

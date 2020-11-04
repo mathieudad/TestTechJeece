@@ -7,7 +7,7 @@ exports.read_a_team = async function (req, res) {
         res.json(err)
     })
     if(!team) return
-    const resp = await Resp.getRespById(team.idResp).catch((err) =>{
+    const resp = await Resp.getRespById(team.id_resp).catch((err) =>{
         res.json(err)
     })
     if(!resp) return
