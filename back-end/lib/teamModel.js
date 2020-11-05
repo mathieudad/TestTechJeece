@@ -30,7 +30,6 @@ Team.getTeamById = function (teamId) {
   })
 }
 
-//Team.getAllTeams()
 
 
 Team.getTeamByDeptNumber = function (dept, number) {

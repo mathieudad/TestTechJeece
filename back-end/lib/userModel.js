@@ -1,6 +1,7 @@
 const sql = require('./db')
 const Team = require('./teamModel')
-
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 const User = function (user, team) {
   this.lastName = user.last_name
@@ -46,18 +47,17 @@ User.getUserByLogin = function (eMail, password) {
         }
 
         if (res.length) {
-          if (password === res[0].password) {
-            resolve(res[0])
-            return
-          }
-          else {
-            reject("Wrong password")
-            return
-          }
+          bcrypt.compare(password, res[0].password, function (err, result) {
+            if (err)
+              reject(err)
+            else if (result)
+              resolve(res[0])
+            else
+              reject("Wrong password")
+          })
         }
-        // not found user with the e-mail
-        reject("Wrong e-Mail")
-        return
+        else
+          reject("Wrong e-Mail")
       })
   })
 }
@@ -74,7 +74,7 @@ User.getUserByEMail = function (eMail) {
         if (res.length) {
           resolve(res[0])
           return
-        }else
+        } else
           reject("user not found at this eMail")
       })
   })
@@ -197,18 +197,24 @@ User.createNewUser = function (firstName, lastName, password, passwordConfirm, d
       reject(err)
       return
     })
-    console.log(idTeam)
     if (idTeam === undefined)
       return
-
-    sql.query(`INSERT INTO users(id, last_name, first_name, e_mail, password, id_team) 
-    VALUES (0,'${lastName}','${firstName}','${eMail}','${password}',${idTeam.id});`,
-      (err) => {
-        if (err) {
+    bcrypt.genSalt(saltRounds, function (err, salt) {
+      bcrypt.hash(password, salt, function (err, hash) {
+        sql.query(`INSERT INTO users(id, last_name, first_name, e_mail, password, id_team) 
+      VALUES (0,'${lastName}','${firstName}','${eMail}','${hash}',${idTeam.id});`,
+          (err) => {
+            if (err) {
+              reject(err)
+            }
+            resolve(eMail)
+          })
+        if (err)
           reject(err)
-        }
-        resolve(eMail)
       })
+      if (err)
+        reject(err)
+    })
   })
 }
 
@@ -235,15 +241,20 @@ function createNewUserWithoutTeam(firstName, lastName, password, passwordConfirm
       reject("try an other password")
       return
     }
-    sql.query(`INSERT INTO users(id, last_name, first_name, e_mail, password, id_team) 
-    VALUES (0,'${lastName}','${firstName}','${eMail}','${password}',NULL);`,
-      (err) => {
-        if (err) {
-          reject(err)
-        }
-        resolve(eMail)
+    bcrypt.genSalt(saltRounds, function (err, salt) {
+      bcrypt.hash(password, salt, function (err, hash) {
+        sql.query(`INSERT INTO users(id, last_name, first_name, e_mail, password, id_team) 
+    VALUES (0,'${lastName}','${firstName}','${eMail}','${hash}',NULL);`,
+          (err) => {
+            if (err) {
+              reject(err)
+            }
+            resolve(eMail)
+          })
       })
-
+      if (err) reject(err)
+    })
+    if (err) reject(err)
   })
 }
 
@@ -285,6 +296,46 @@ User.createNewUserAndTeam = function (firstName, lastName, password, passwordCon
   })
 }
 
+
+User.getUsersByDept = function (dept) {
+  return new Promise(function (resolve, reject) {
+    sql.query(`SELECT * FROM users WHERE id_team IN ( 
+                SELECT id FROM teams WHERE dept = "${dept}"
+              );`, (err, res) => {
+      if (err) {
+        reject(err)
+        return
+      }
+      if (res.length) {
+        resolve(res)
+        return
+      }
+      reject("not Found users in this dept")
+
+    })
+  })
+}
+
+
+User.getUsersByTeam = function (dept, number) {
+  return new Promise(function (resolve, reject) {
+    sql.query(`SELECT * FROM users WHERE id_team = (SELECT id FROM teams WHERE number = ${number} AND dept = "${dept}")`,
+      (err, res) => {
+        if (err) {
+          reject(err)
+          return
+        }
+        if (res.length) {
+          resolve(res)
+        }
+        else
+          reject("no users at this team")
+      })
+
+  })
+}
+
+
 function testMatch(res, name) {
   var match = new Array()
   name = name.toLowerCase()
@@ -311,7 +362,7 @@ function testMatch(res, name) {
   return match
 }
 
-User.getUserByLastOrFirstName = function (name,dept) {
+User.getUserByLastOrFirstNameAndDept = function (name, dept) {
   return new Promise(function (resolve, reject) {
     sql.query(`SELECT * FROM users WHERE id_team IN (SELECT id FROM teams WHERE dept = "${dept}");`,
       (err, res) => {
@@ -330,28 +381,25 @@ User.getUserByLastOrFirstName = function (name,dept) {
   })
 }
 
-User.getUsersByTeam = function (number, dept){
-  return new Promise(function(resolve, reject){
-    sql.query(`SELECT * FROM user WHERE id_team = (SELECT id FROM teams WHERE number = ${number} AND dept = "${dept}")`,
-    (err, res) => {
-      if (err) {
-        reject(err)
-        return
-      }
-      if(res.length)
-        resolve(res)
-      else 
-        reject("no users at this team")
+User.getUserByLastOrFirstNameAndDeptAndNumber = function (name, dept, number) {
+  return new Promise(function (resolve, reject) {
+    sql.query(`SELECT * FROM users WHERE id_team IN (SELECT id FROM teams WHERE dept = "${dept}" AND number = ${number});`,
+      (err, res) => {
+        if (err) {
+          reject(err)
+          return
+        }
+        else if (res.length) {
+          const match = testMatch(res, name)
+          resolve(match)
+          return
+        } else {
+          reject("no user at this name")
+        }
       })
-      
   })
 }
 
-
-//User.deleteUser()
-
-
-//User.getAllUser()
 
 
 User.getUsersByDept = function (dept) {
@@ -373,6 +421,64 @@ User.getUsersByDept = function (dept) {
   })
 }
 
+function testOldPW(eMail, oldPassword) {
+  return new Promise(function (resolve, reject) {
+    sql.query(`SELECT password FROM users WHERE e_mail = "${eMail}"`,
+      (err, res) => {
+        if (err) {
+          reject(err)
+        } else if (res.length) {
+          bcrypt.compare(oldPassword, res[0].password, function (err, result) {
+            if (err)
+              reject(err)
+            else if (result)
+              resolve("OK")
+            else
+              reject("wrong old password")
+          }
+          )
+        }
+        else reject("no user at this eMail")
+      })
+  })
+}
+
+User.setPassword = function (eMail, oldPassword, password, passwordConfirm) {
+  return new Promise(async function (resolve, reject) {
+    const testPW = await testOldPW(eMail, oldPassword).catch(
+      (err) => {
+        reject(err)
+        return
+      }
+    )
+    if (!testPW) return
+    if (passwordConfirm != password)
+      reject("please enter the same password twice")
+    else if (!checkPassword(password)) {
+      reject("try an other password")
+    }
+    else {
+      bcrypt.genSalt(saltRounds, function (err, salt) {
+        bcrypt.hash(password, salt, function (err, hash) {
+          sql.query(`UPDATE users SET password = "${hash}" WHERE e_mail = "${eMail}";`,
+            (err, res) => {
+              if (err) {
+                reject(err)
+                return
+              }
+              resolve(res.affectedRows)
+              return
+            })
+          if (err)
+            reject(err)
+        })
+        if (err)
+          reject(err)
+      })
+    }
+  })
+}
+
 
 
 const Resp = function (user) {
@@ -385,7 +491,6 @@ Resp.getRespById = function (idResp) {
     sql.query(`SELECT last_name, first_name FROM users WHERE id = ${idResp};`,
       (err, res) => {
         if (err) {
-          console.log("error: ", err)
           reject(err)
           return
         }

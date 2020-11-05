@@ -13,20 +13,21 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 
-app.get('/users/:userId', userController.read_a_user)
+//app.get('/users/:userId', userController.read_a_user)
 
 app.post('/login',userController.read_a_login)
 
-app.get('/team/:teamId', teamController.read_a_team)
+app.get('/home_page',userController.read_user_by_eMail)
 
 app.post('/create', userController.create_user)
 
-app.get('/findD', userController.read_users_by_dept)
+app.get('/find',userController.read_users_by_name_dept_number)
 
-app.get('/findN',userController.read_user_by_name_and_dept)
+app.get('/chat',messageController.read_messages)
 
-app.get('/messages',messageController.read_messages)
+app.post('/chat',messageController.write_messages)
 
+app.post('/profile', userController.set_password)
 
 port = process.env.PORT || 3000;
 
