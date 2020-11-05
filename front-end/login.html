@@ -60,12 +60,9 @@
             color : #1818bb;
         }
     </style>
-    <script LANGUAGE="JavaScript">
-       
-    </script>
 </head>
 
-<body style="background-color: #fff;" onload="initElement();">
+<body style="background-color: #fff;">
     <div>
         <section id="affichage">
             <h1>
@@ -78,15 +75,15 @@
         <div class="connexion">
             <strong><em>Connectez-vous :</em></strong>
             <section class="carre">
-            <form method="post" action="http://localhost:4000/login">
+            <form method="post">
                 <div id="connexion">
                     <label for="name"><strong>Adresse email :</strong></label>
                     <br/>
-                    <input type="email" id="user" placeholder="Entrer le nom d'utilisateur" name="eMail" required minlength="4" maxlength="25" size="25" required>
+                    <input type="email" id="user" placeholder="Entrer le nom d'utilisateur" name="eMail" required minlength="4" maxlength="50" size="25" required>
                     <br/><br/>
                     <label for="name"><strong>Mot de passe :</strong></label>
                     <br/>
-                    <input type="password" id="password" placeholder="Entrer le mot de passe" name="password" required minlength="4" maxlength="20" size="20" required>
+                    <input type="password" id="password" placeholder="Entrer le mot de passe" name="password" required minlength="1" maxlength="20" size="20" required>
                 </div>
                 <br/><br/>
                 <input type="submit" id='submit' value='Connexion'>
@@ -100,4 +97,7 @@
 
     </div>
 </body>
+<script>
+    
+</script>
 </html>

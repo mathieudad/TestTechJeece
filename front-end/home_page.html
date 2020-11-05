@@ -16,14 +16,17 @@
 
 <body>
     <header>
+        
+    </header>
+    <div>
         <nav class="nav nav-pills nav-justified">
             <a class="nav-link active" href="http://localhost:4000/home_page">Chercher un profil</a>
             <a class="nav-link" href="http://localhost:4000/chat">Chat en ligne</a>
             <a class="nav-link" href="http://localhost:4000/profil">Votre Profil</a>
         </nav>
-    </header>
+    </div>
     <br/>
-    <form>
+    <form method="get" onkeypress="getObject()" onchange="getObject()">
         <select class="form-control form-control-lg" id="select">
             <option>--Selectionner un departement--</option>
             <option value="">--Please choose an option--</option>
@@ -39,10 +42,23 @@
         </div>
         <div class="input-group mb-3">
             <input type="text" class="form-control" placeholder="Entrer le nom d'une personne" aria-label="Recipient's username" aria-describedby="button-addon2">
-            <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="button" id="button-addon2">Rechercher</button>
-            </div>
          </div>
     </form>
 </body>
+<script>
+    const proxyurl = "https://cors-anywhere.herokuapp.com/";
+    const url = "http://localhost:3000/find";
+    
+    function getObject(){
+        fetch(proxyurl+url, {
+            method: "GET",
+            headers: { 'Content-Type': 'application/json' },
+        })
+        .then(res => res.json())
+        .then( data => {
+            console.log(data)
+        })
+        .catch(err => console.log(err));
+    } 
+</script>
 </html>

@@ -32,13 +32,25 @@ app.get('/chat', (req, res) => {
   res.sendfile('chat.html')
 })
 
-app.get('/edit_profil', (req, res) => {
-  res.set('Content-Type', 'text/html');
-  res.sendfile('edit_profil.html')
+app.post('/profil',(req, res) => {
+  fetch("http://localhost:3000/profil", {
+    method: "post",
+    body: JSON.stringify(req.body),
+    headers: { 'Content-Type': 'application/json' },
+  })
+  .then(res => res.json())
+  .then(json => {
+    if(json){
+      console.log(json);
+    }
+    else{
+      console.log(json);
+      res.sendfile('create.html')
+    }
+  });
 })
 
 app.post('/create',(req, res) => {
-
   fetch("http://localhost:3000/create", {
     method: "post",
     body: JSON.stringify(req.body),
@@ -46,8 +58,8 @@ app.post('/create',(req, res) => {
   })
   .then(res => res.json())
   .then(json => {
-    if(json=="OK"){
-      console.log("it's good");
+    if(json){
+      console.log(json);
     }
     else{
       console.log(json);
@@ -57,16 +69,16 @@ app.post('/create',(req, res) => {
 })
 
 app.post('/login',(req, res) => {
-
   fetch("http://localhost:3000/login", {
     method: "post",
     body: JSON.stringify(req.body),
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 
+      'Content-Type': 'application/json'},
   })
   .then(res => res.json())
   .then(json => {
-    if(json=="OK"){
-      console.log("it's good");
+    if(json){
+      console.log(json)
     }
     else{
       console.log(json);
@@ -78,6 +90,3 @@ app.post('/login',(req, res) => {
 app.listen(port, () => {
   console.log("App is on")
 })
-
-
-

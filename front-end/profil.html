@@ -11,7 +11,7 @@
         /* Profile container */
         .profile {
             position : absolute;
-            right : 35%;
+            right : 50%;
             top: 15%;
             width : 30%;
         }
@@ -41,20 +41,29 @@
           text-align: center;
           margin-top: 10px;
         }
+        #down{
+            position : absolute;
+            top : 35%;
+            left : 60%;
+        }
+        #buton{
+            position: absolute;
+            left : 6%;
+        }
     </style>
-    <script>
-
-    </script>
 </head>
 
 <body>
     <header>
+        
+    </header>
+    <div>
         <nav class="nav nav-pills nav-justified">
             <a class="nav-link" href="http://localhost:4000/home_page">Chercher un profil</a>
             <a class="nav-link" href="http://localhost:4000/chat">Chat en ligne</a>
             <a class="nav-link active" href="http://localhost:4000/profil">Votre Profil</a>
         </nav>
-    </header>
+    </div>
     <br/>
     <div class="profile">
         <div class="profile-sidebar">
@@ -62,8 +71,8 @@
                 <img src="https://photo-cv.com/img/portfolio/fullsize/2.jpg" class="img-responsive" alt="">
             </div>
             <div class="profile-usertitle">
-                <div class="profile-usertitle">
-                    <input name="textarea" type="text" size="20" maxlength="20" readonly="true" value="Mon nom"/>
+                <div class="profile-usertitle" id="name">
+                   Nom
                 </div>
                 <div class="profile-usertitle">
                     <input name="textarea" type="text" size="20" maxlength="20" readonly="true" value="Mon prenom"/>
@@ -78,13 +87,22 @@
                     <input name="textarea" type="text" size="20" maxlength="20" readonly="true" value="Ma Description"/>
                 </div>
             </div>
-            <br/>
-            
-            <div class="profile-userbuttons">
-                <a href="http://localhost:4000/edit_profil" class="btn btn-primary stretched-link">Modifier profil</a>
-            </div>
         </div>
     </div>
+    <form post="method" id="down">
+        <div class="form-group mx-sm-3 mb-2">
+            <label for="inputPassword1" class="sr-only">Password</label>
+            <input type="password" class="form-control" id="inputPassword1" placeholder="New Password">
+        </div><br/>
+        <div class="form-group mx-sm-3 mb-2">
+          <label for="inputPassword2" class="sr-only">Confirm Password</label>
+          <input type="password" class="form-control" id="inputPassword2" placeholder="Confirm New Password">
+        </div>
+        <br/><br/>
+        <button type="submit" class="btn btn-primary mb-2" id="buton">Confirm Change Password</button>
+    </form>
+    
     
 </body>
+
 </html>
