@@ -1,0 +1,104 @@
+
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "eMail" : "homer.simpson.4@societe.com",
+    "password" :"Aaaaaaaa1*"
+}
+
+###
+
+GET http://localhost:3000/home_page
+Content-Type: application/json
+
+{
+    "eMail" : "homer.simpson.4@societe.com"
+}
+
+###
+
+POST http://localhost:3000/create
+Content-Type: application/json
+
+{
+    "firstName" : "Marge",
+    "lastName" :"Simpson",
+    "password" :"Aaaaaaaa1*",
+    "passwordConfirm" : "Aaaaaaaa1*",
+    "dept" : "business",
+    "numberTeam" : 2
+}
+
+###
+
+GET http://localhost:3000/find
+Content-Type: application/json
+
+{
+    "dept" : "business"
+}
+
+###
+
+GET http://localhost:3000/find
+Content-Type: application/json
+
+{
+    "name" : "lisa simpson",
+    "dept" :"business"
+}
+
+###
+
+GET http://localhost:3000/find
+Content-Type: application/json
+
+{
+    "dept" :"business",
+    "number" : 1
+}
+
+###
+
+GET http://localhost:3000/find
+Content-Type: application/json
+
+{
+    "name" : "lisa simpson",
+    "dept" :"business",
+    "number" : 1
+}
+
+###
+
+GET http://localhost:3000/chat
+Content-Type: application/json
+
+{
+    "myMail" : "mathieu.dadoun@societe.com",
+    "yourMail" : "bart.simpson@societe.com"
+}
+
+###
+
+POST http://localhost:3000/messages
+Content-Type: application/json
+
+{
+    "senderMail" : "mathieu.dadoun@societe.com",
+    "recipientMail" : "bart.simpson@societe.com",
+    "content" : "je vais bien et toi ?"
+}
+
+###
+
+POST http://localhost:3000/profile
+Content-Type: application/json
+
+{
+    "eMail" : "homer.simpson.4@societe.com",
+    "oldPassword" : "Bbbbbbb1*",
+    "password" : "Aaaaaaaa1*",
+    "passwordConfirm" : "Aaaaaaaa1*"
+}
