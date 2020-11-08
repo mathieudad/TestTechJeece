@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 05, 2020 at 03:24 PM
+-- Generation Time: Nov 08, 2020 at 03:58 PM
 -- Server version: 8.0.22-0ubuntu0.20.04.2
 -- PHP Version: 7.4.3
 
@@ -40,16 +40,11 @@ CREATE TABLE `messages` (
 --
 
 INSERT INTO `messages` (`date`, `id_sender`, `id_recipient`, `content`) VALUES
-('2020-11-03 15:14:23', 1, 2, 'hello'),
-('2020-11-05 13:40:21', 1, 2, 'hellooooo'),
-('2020-11-05 13:40:32', 1, 2, 'hellooooo'),
-('2020-11-05 13:40:33', 1, 2, 'hellooooo'),
-('2020-11-05 13:40:34', 1, 2, 'hellooooo'),
-('2020-11-05 13:45:39', 1, 2, 'hellooooo'),
-('2020-11-05 13:56:30', 1, 2, 'hellooooo'),
-('2020-11-05 14:00:45', 1, 2, 'je vais bien et toi ?'),
-('2020-11-05 13:13:04', 2, 1, 'hello mathieu'),
-('2020-11-05 14:00:13', 2, 1, 'comment vas tu ?');
+('2020-11-08 15:55:50', 53, 54, 'bonjour lisa'),
+('2020-11-08 15:56:01', 53, 54, 'tu vas bien ?'),
+('2020-11-08 15:56:39', 53, 54, 'Tres bien merci'),
+('2020-11-08 15:55:39', 54, 53, 'bonjour bart'),
+('2020-11-08 15:56:22', 54, 53, 'Oui je vais bien et toi ?');
 
 -- --------------------------------------------------------
 
@@ -69,11 +64,11 @@ CREATE TABLE `teams` (
 --
 
 INSERT INTO `teams` (`id`, `number`, `id_resp`, `dept`) VALUES
-(1, 1, 1, 'Business'),
-(12, 3, 41, 'Business'),
-(13, 4, 42, 'Business'),
-(14, 5, 43, 'Business'),
-(15, 6, 44, 'Business');
+(17, 1, 51, 'Business'),
+(18, 2, 52, 'Business'),
+(19, 1, 53, 'RH'),
+(20, 1, 54, 'Marketing'),
+(21, 1, 57, 'Finance');
 
 -- --------------------------------------------------------
 
@@ -95,18 +90,13 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `last_name`, `first_name`, `e_mail`, `password`, `id_team`) VALUES
-(1, 'Dadoun', 'Mathieu', 'mathieu.dadoun@societe.com', 'Aaaaaaaaa1*', 1),
-(2, 'simpson', 'bart', 'bart.simpson@societe.com', 'Aaaaaaaa1*', 1),
-(39, 'Simpson', 'lisa', 'lisa.simpson.1@societe.com', 'Bbbbbbb1*', 1),
-(40, 'Simpson', 'lisa', 'lisa.simpson.2@societe.com', 'Bbbbbbb1*', 1),
-(41, 'Simpson', 'lisa', 'lisa.simpson.3@societe.com', 'Bbbbbbb1*', 12),
-(42, 'Simpson', 'lisa', 'lisa.simpson.4@societe.com', 'Bbbbbbb1*', 13),
-(43, 'Simpson', 'lisa', 'lisa.simpson.5@societe.com', 'Bbbbbbb1*', 14),
-(44, 'Simpson', 'Homer', 'homer.simpson@societe.com', 'Bbbbbbb1*', 15),
-(45, 'Simpson', 'Homer', 'homer.simpson.1@societe.com', 'Bbbbbbb1*', 1),
-(46, 'Simpson', 'Homer', 'homer.simpson.2@societe.com', 'Bbbbbbb1*', 1),
-(47, 'Simpson', 'Homer', 'homer.simpson.3@societe.com', 'Bbbbbbb1*', 1),
-(48, 'Simpson', 'Homer', 'homer.simpson.4@societe.com', '$2b$10$N/Uap.iinIjA0yN6XbE54e/6bVblp/OCJBofr/grbsHDf9ttsmJ.G', 1);
+(51, 'Simpson', 'Marge', 'marge.simpson@societe.com', '$2b$10$jC/slbHOMAtHG2vlARraXOhNI6AH0HEybN2S6vYLxQpZ7qj1wycsq', 17),
+(52, 'Simpson', 'Homer', 'homer.simpson@societe.com', '$2b$10$OHDcJ8ams2v3yurIGibKauA4teYdI7L1x/XqvcVat2U0b5kkUWQE2', 18),
+(53, 'Simpson', 'Bart', 'bart.simpson@societe.com', '$2b$10$UKjQHE9a.Nz2vbROCMPGBuDDA3QCEm2NzPu4I2ocup0oQzbuk6kAm', 19),
+(54, 'Simpson', 'Lisa', 'lisa.simpson@societe.com', '$2b$10$5utIfiaByTzpW6nbGaQoj.uXfv2gJsGLhMeHPVtQvSk048MhMI8Qu', 20),
+(55, 'Simpson', 'Maggie', 'maggie.simpson@societe.com', '$2b$10$dwSPYlRHuQAK5V/skg9N9uCTiZLnE7nXvWgcbRINWRLgrIq/.tjf.', 20),
+(56, 'Bob', 'Tahiti', 'tahiti.bob@societe.com', '$2b$10$uQo668cpzcg.gD0HAIVOIuTtPWX4rccMxfk3bFTFGhtSKkfg3DDdS', 18),
+(57, 'Simpson', 'Homer', 'homer.simpson.1@societe.com', '$2b$10$CG6dvzzgKPiLfmqCqINmO.F.siAaeSFpaF5tkkDTjYaZHpNMYjOFO', 21);
 
 --
 -- Indexes for dumped tables
@@ -143,13 +133,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `teams`
 --
 ALTER TABLE `teams`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- Constraints for dumped tables

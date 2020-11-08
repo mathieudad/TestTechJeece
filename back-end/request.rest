@@ -22,12 +22,13 @@ POST http://localhost:3000/create
 Content-Type: application/json
 
 {
-    "firstName" : "Marge",
+    "create_team" : false,
+    "firstName" : "Homer",
     "lastName" :"Simpson",
-    "password" :"Aaaaaaaa1*",
-    "passwordConfirm" : "Aaaaaaaa1*",
-    "dept" : "business",
-    "numberTeam" : 1
+    "password" :"Homer2*",
+    "passwordConfirm" : "Homer2*",
+    "dept" : "Finance",
+    "numberTeam" : 2
 }
 
 ###
@@ -76,7 +77,7 @@ GET http://localhost:3000/chat
 Content-Type: application/json
 
 {
-    "myMail" : "mathieu.dadoun@societe.com",
+    "myMail" : "lisa.simpson@societe.com",
     "yourMail" : "bart.simpson@societe.com"
 }
 
@@ -86,9 +87,9 @@ POST http://localhost:3000/chat
 Content-Type: application/json
 
 {
-    "senderMail" : "mathieu.dadoun@societe.com",
-    "recipientMail" : "bart.simpson@societe.com",
-    "content" : "je vais bien et toi ?"
+    "senderMail" : "bart.simpson@societe.com",
+    "recipientMail" : "lisa.simpson@societe.com",
+    "content" : "Tres bien merci"
 }
 
 ###

@@ -251,10 +251,10 @@ function createNewUserWithoutTeam(firstName, lastName, password, passwordConfirm
             }
             resolve(eMail)
           })
+        if (err) reject(err)
       })
       if (err) reject(err)
     })
-    if (err) reject(err)
   })
 }
 
@@ -292,7 +292,7 @@ User.createNewUserAndTeam = function (firstName, lastName, password, passwordCon
         reject(err)
         return
       })
-    resolve(up)
+    resolve(eMail)
   })
 }
 

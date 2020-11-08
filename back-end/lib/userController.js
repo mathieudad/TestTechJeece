@@ -33,7 +33,7 @@ exports.read_a_login = async function (req, res) {
         res.json(err)
     })
     if (!resp) return
-    res.json(new User(user, new Team(team, new Resp(resp))).eMail)
+    res.json(new User(user, new Team(team, new Resp(resp))))
 
 }
 
@@ -142,15 +142,28 @@ async function create_a_user_and_team(firstName, lastName,
 
 }
 exports.create_user = async function (req, res) {
+    
     if (!req.body.create_team) {
-        const rep = await create_a_user(req.body.firstName, req.body.lastName,
+        var rep = await create_a_user(req.body.firstName, req.body.lastName,
             req.body.password, req.body.passwordConfirm, req.body.dept, req.body.numberTeam)
-        res.json(rep)
+        
     } else {
-        const rep = await create_a_user_and_team(req.body.firstName, req.body.lastName,
+        var rep = await create_a_user_and_team(req.body.firstName, req.body.lastName,
             req.body.password, req.body.passwordConfirm, req.body.dept)
-        res.json(rep)
     }
+    const user = await User.getUserByEMail(rep).catch((err) => {
+        res.json(err)
+    })
+    if (!user) return
+    const team = await Team.getTeamById(user.id_team).catch((err) => {
+        res.json(err)
+    })
+    if (!team) return
+    const resp = await Resp.getRespById(team.id_resp).catch((err) => {
+        res.json(err)
+    })
+    if (!resp) return
+    res.json(new User(user, new Team(team, new Resp(resp))))
 }
 
 exports.set_password = async function (req, res){
