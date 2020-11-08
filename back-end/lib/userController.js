@@ -4,21 +4,7 @@ const { read } = require('fs')
 var Team = require('./teamModel')
 
 
-exports.read_a_user = async function (req, res) {
-    const user = await User.getUserById(req.params.userId).catch((err) => {
-        res.json(err)
-    })
-    if (!user) return
-    const team = await Team.getTeamById(user.id_team).catch((err) => {
-        res.json(err)
-    })
-    if (!team) return
-    const resp = await Resp.getRespById(team.id_resp).catch((err) => {
-        res.json(err)
-    })
-    if (!resp) return
-    res.json(new User(user, new Team(team, new Resp(resp))))
-}
+
 
 exports.read_a_login = async function (req, res) {
     const user = await User.getUserByLogin(req.body.eMail, req.body.password).catch((err) => {
@@ -55,6 +41,7 @@ async function getRealUsers(users){
     return realUsers
 }
 
+//unused
 exports.read_user_by_eMail = async function (req,res){
     const user = await User.getUserByEMail(req.body.eMail).catch((err) => {
         res.json(err)
@@ -116,6 +103,7 @@ async function read_user_by_dept_and_number_and_name(name,dept,number){
     return await getRealUsers(users)
 }
 
+//unused
 exports.read_user_by_team= async function(req,res){
     const users = await User.getUserByTeam(req.body.number, req.body.dept).catch((err) =>{
         res.json(err)

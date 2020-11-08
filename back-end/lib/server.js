@@ -23,15 +23,12 @@ app.use((req, res, next) => {
     });
 });
 
-//app.get('/users/:userId', userController.read_a_user)
 
 app.post('/login',userController.read_a_login)
 
-app.get('/home_page',userController.read_user_by_eMail)
-
 app.post('/create', userController.create_user)
 
-app.get('/find',userController.read_users_by_name_dept_number)
+app.get('/home_page',userController.read_users_by_name_dept_number)
 
 app.get('/chat',messageController.read_messages)
 
