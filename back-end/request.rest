@@ -27,7 +27,7 @@ Content-Type: application/json
     "password" :"Aaaaaaaa1*",
     "passwordConfirm" : "Aaaaaaaa1*",
     "dept" : "business",
-    "numberTeam" : 2
+    "numberTeam" : 1
 }
 
 ###
@@ -36,7 +36,7 @@ GET http://localhost:3000/find
 Content-Type: application/json
 
 {
-    "dept" : "business"
+    "dept": "business"
 }
 
 ###
@@ -82,7 +82,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:3000/messages
+POST http://localhost:3000/chat
 Content-Type: application/json
 
 {

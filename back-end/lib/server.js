@@ -12,6 +12,16 @@ app.use(bodyParser.json())
 // parse requests of content-type: application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }))
 
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    next();
+
+    app.options('*', (req, res) => {
+        res.header('Access-Control-Allow-Methods', 'GET, POST');
+        res.send();
+    });
+});
 
 //app.get('/users/:userId', userController.read_a_user)
 

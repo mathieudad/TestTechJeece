@@ -43,22 +43,23 @@
         <div class="input-group mb-3">
             <input type="text" class="form-control" placeholder="Entrer le nom d'une personne" aria-label="Recipient's username" aria-describedby="button-addon2">
          </div>
+         <script>
+            const url = "http://localhost:3000/find";
+            
+            function getObject(){
+                fetch(url+"?dept="+document.querySelector("#select").value, {
+                    method: "GET",
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                })
+                .then(res => res.json())
+                .then( data => {
+                    console.log(data)
+                })
+                .catch(err => console.log(err));
+            } 
+        </script>
     </form>
-</body>
-<script>
-    const proxyurl = "https://cors-anywhere.herokuapp.com/";
-    const url = "http://localhost:3000/find";
     
-    function getObject(){
-        fetch(proxyurl+url, {
-            method: "GET",
-            headers: { 'Content-Type': 'application/json' },
-        })
-        .then(res => res.json())
-        .then( data => {
-            console.log(data)
-        })
-        .catch(err => console.log(err));
-    } 
-</script>
+</body>
+
 </html>

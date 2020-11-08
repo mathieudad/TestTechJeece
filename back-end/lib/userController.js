@@ -73,6 +73,7 @@ exports.read_user_by_eMail = async function (req,res){
 
 
 exports.read_users_by_name_dept_number = async function (req,res){
+    console.log(req.body.dept)
     if(!req.body.name && !req.body.number)
         res.json(await read_users_by_dept(req.body.dept))
     else if(!req.body.name)
@@ -141,7 +142,7 @@ async function create_a_user_and_team(firstName, lastName,
 
 }
 exports.create_user = async function (req, res) {
-    if (!req.body.createTeam) {
+    if (!req.body.create_team) {
         const rep = await create_a_user(req.body.firstName, req.body.lastName,
             req.body.password, req.body.passwordConfirm, req.body.dept, req.body.numberTeam)
         res.json(rep)
