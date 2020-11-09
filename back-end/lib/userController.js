@@ -60,15 +60,14 @@ exports.read_user_by_eMail = async function (req,res){
 
 
 exports.read_users_by_name_dept_number = async function (req,res){
-    console.log(req.body.dept)
-    if(!req.body.name && !req.body.number)
-        res.json(await read_users_by_dept(req.body.dept))
-    else if(!req.body.name)
-        res.json(await read_user_by_dept_and_number(req.body.dept, req.body.number))
-    else if(!req.body.number)
-        res.json(await read_user_by_name_and_dept(req.body.name, req.body.dept))
+    if(!req.param("name") && !req.param("number"))
+        res.json(await read_users_by_dept(req.param("dept")))
+    else if(!req.param("name"))
+        res.json(await read_user_by_dept_and_number(req.param("dept"), req.param("number")))
+    else if(!req.param("number"))
+        res.json(await read_user_by_name_and_dept(req.param("name").replace('_',' '), req.param("dept")))
     else
-        res.json(await read_user_by_dept_and_number_and_name(req.body.name, req.body.dept, req.body.number))
+        res.json(await read_user_by_dept_and_number_and_name(req.param("name").replace('_',' '), req.param("dept"), req.param("number")))
 }
 
 async function read_users_by_dept(dept) {

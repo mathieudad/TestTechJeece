@@ -30,7 +30,7 @@ app.post('/create', userController.create_user)
 
 app.get('/home_page',userController.read_users_by_name_dept_number)
 
-app.get('/chat',messageController.read_messages)
+app.get('/chat/:me/:you',messageController.read_messages)
 
 app.post('/chat',messageController.write_messages)
 

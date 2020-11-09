@@ -13,12 +13,12 @@ async function getRealMessages(messages,me,you){
 }
 
 exports.read_messages = async function(req,res){
-    const me = await User.getUserByEMail(req.body.myMail)
+    const me = await User.getUserByEMail(req.params.me)
     .catch((err) =>{
         reject("sender "+err)
     })
     if(!me) return
-    const you = await User.getUserByEMail(req.body.yourMail)
+    const you = await User.getUserByEMail(req.params.you)
     .catch((err)=> {
         reject("recipient "+err)
     })

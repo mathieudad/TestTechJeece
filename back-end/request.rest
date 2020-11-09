@@ -33,53 +33,28 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/find
-Content-Type: application/json
+GET http://localhost:3000/home_page?dept=RH
+###
 
-{
-    "dept": "business"
-}
+GET http://localhost:3000/home_page?dept=business&name=lisa_Simpson
+
 
 ###
 
-GET http://localhost:3000/find
+GET http://localhost:3000/home_page?dept=business&&number=1
 Content-Type: application/json
 
-{
-    "name" : "lisa simpson",
-    "dept" :"business"
-}
 
 ###
 
-GET http://localhost:3000/find
+GET http://localhost:3000/home_page?dept=Marketing&name=lisa_simpson&number=1
 Content-Type: application/json
 
-{
-    "dept" :"business",
-    "number" : 1
-}
 
 ###
 
-GET http://localhost:3000/find
-Content-Type: application/json
+GET http://localhost:3000/chat/lisa.simpson@societe.com/bart.simpson@societe.com
 
-{
-    "name" : "lisa simpson",
-    "dept" :"business",
-    "number" : 1
-}
-
-###
-
-GET http://localhost:3000/chat
-Content-Type: application/json
-
-{
-    "myMail" : "lisa.simpson@societe.com",
-    "yourMail" : "bart.simpson@societe.com"
-}
 
 ###
 
