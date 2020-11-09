@@ -9,8 +9,8 @@ head
     /* Profile container */
     .profile {
     position : absolute;
-    right : 50%;
-    top: 15%;
+    right : 55%;
+    top: 30%;
     width : 30%;
     }
     /* Profile sidebar */
@@ -42,11 +42,18 @@ head
     }
     #buton{
     position: absolute;
-    left : 6%;
+    left : 12%;
     }
     header{
        text-align : center;
        font-size: 1.6em;
+    }
+    li{
+      text-align : center;
+      vertical-align : middle;
+    }
+    .italic{
+      font-style: italic;
     }
 header
   strong Votre profil
@@ -60,30 +67,37 @@ br
 .profile
   .profile-sidebar
     .profile-userpic
-      img.img-responsive(src='https://photo-cv.com/img/portfolio/fullsize/2.jpg', alt='')
-    .profile-usertitle
-      .profile-usertitle
-        p= lastName
-      .profile-usertitle
-        p= firstName
-      .profile-usertitle
+      
+    ul.list-group
+      li.list-group-item(aria-disabled='true') 
+        strong.italic Prenom :
+        p=firstName
+      li.list-group-item
+        strong.italic Nom :
+        p=lastName
+      li.list-group-item
+        strong.italic Team :
         p= team
-      .profile-usertitle
+      li.list-group-item
+        strong.italic Departement : 
         p= dept
+    
 form#down(post='method')
   .form-group.mx-sm-3.mb-2
-    label.sr-only(for='inputPassword1') Old Password
-    input#inputPassword1.form-control(type='password', placeholder='Old Password', name='oldPassword')
+    label.sr-only(for='inputEmail') Email
+    input#inputPassword1.form-control(type='text', name='eMail', value= eMail, readonly="readonly")
   br
   .form-group.mx-sm-3.mb-2
-    label.sr-only(for='inputPassword1') Password
-    input#inputPassword1.form-control(type='password', placeholder='New Password', name='password')
+    label.sr-only(for='inputPassword1') Ancien MDP
+    input#inputPassword1.form-control(type='password', placeholder='Ancien MDP', name='oldPassword')
   br
   .form-group.mx-sm-3.mb-2
-    label.sr-only(for='inputPassword2') Confirm Password
-    input#inputPassword2.form-control(type='password', placeholder='Confirm New Password', name='passwordConfirm')
+    label.sr-only(for='inputPassword2') Mot de Passe
+    input#inputPassword1.form-control(type='password', placeholder='Nouveau MDP', name='password')
+  br
+  .form-group.mx-sm-3.mb-2
+    label.sr-only(for='inputPassword2') Confirmez MDP
+    input#inputPassword2.form-control(type='password', placeholder='Confirmez MDP', name='passwordConfirm')
   br
   br
-  button#buton.btn.btn-primary.mb-2(type='submit') Confirm Change Password
-
-
+  button#buton.btn.btn-primary.mb-2(type='submit') Changer mot de passe

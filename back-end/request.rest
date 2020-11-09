@@ -41,7 +41,7 @@ GET http://localhost:3000/home_page?dept=business&name=lisa_Simpson
 
 ###
 
-GET http://localhost:3000/home_page?dept=business&&number=1
+GET http://localhost:3000/home_page?dept=business&name=&number=1
 Content-Type: application/json
 
 

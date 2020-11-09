@@ -1,0 +1,119 @@
+doctype html
+head
+  meta(charset='utf-8')
+  link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css', integrity='sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2', crossorigin='anonymous')
+  style.
+    header{
+      text-align : center;
+      font-size: 1.6em;
+      padding-bottom : 1em;
+    }
+    html, body{height: 100%;}
+    .bubble_left{
+      position : absolute;
+      right : 15%;
+      font-family: sans-serif;
+      width: 20em;
+      background: #fff;
+      border : 0.1em solid blue;
+      border-radius: 10px;
+      padding: 10px;
+      padding-bottom : 0px;
+      padding-right : 1.5em;
+      color: #000;
+    }
+    .bubble_right{
+      position : absolute;
+      left : 15%;
+      font-family: sans-serif;
+      width: 20em;
+      border : 0.1em solid blue;
+      background: #fff;
+      border-radius: 10px;
+      padding: 10px;
+      padding-bottom : 0px;
+      color: #000;
+      padding-left : 1.5em;
+      padding-bottom : 0px;
+    }
+    footer{
+      position: fixed;
+      bottom: 2%;
+      width : 100%;
+      height: 2em;
+    }
+    .over{
+      position : fixed;
+      width : 100%;
+      overflow: hidden;
+      z-index : 7;
+      background : #fff;
+    }
+    #none{
+      display: none;
+    }
+    .hour-right{
+      font-size : 0.5em;
+      text-align : left;
+    }
+    .date-right{
+      font-size : 0.5em;
+      text-align : left;
+    }
+    .text-right{
+      font-size : 1em;
+      text-align : right;
+    }
+    .hour-left{
+      font-size : 0.5em;
+      text-align : right;
+    }
+    .date-left{
+      font-size : 0.5em;
+      text-align : right;
+    }
+    .text-left{
+      font-size : 1em;
+      text-align : left;
+    }
+header.over
+  strong Chat en ligne
+br
+br
+div.amount
+  div.over
+    nav.nav.nav-pills.nav-justified
+      a.nav-link(href='http://localhost:4000/home_page') Chercher un profil
+      a.nav-link.active(href='http://localhost:4000/chat') Chat en ligne
+      a.nav-link(href='http://localhost:4000/profil') Votre Profil
+  br
+  br
+  div
+    each element in data
+      if element.sender === mail1
+        div.bubble_left
+          p.date-right= element.date
+          p.text-right= element.content
+          p.hour-right= element.hour
+      else
+        div.bubble_right
+          p.date-left= element.date
+          p.text-left= element.content
+          p.hour-left= element.hour
+      br
+      br
+      br
+      br
+      br
+  br
+  br
+footer
+  form(method='post')
+    input#none(type='text', name='senderMail', value= mail1, readonly="readonly")
+    input#none(type='text', name='recipientMail', value= mail2, readonly="readonly")
+    .input-group.mb-3
+      input.form-control(type='text', placeholder="Ecrire le message", aria-label="Recipient's username", aria-describedby='button-addon2', name='content')
+      .input-group-append
+        button#button-addon2.btn.btn-outline-secondary(type='submit') Envoyer le message
+
+

@@ -71,6 +71,10 @@
         input[type=checkbox]{
             display: inline-block;
         }
+        .inscription{
+            line-height: 150%;
+            font-family: Verdana, sans-serif;
+        }
     </style>
     <script LANGUAGE="JavaScript">
        
@@ -97,9 +101,9 @@
                     <option value="Compliance">Compliance</option>
                     <option value="Finance">Finance</option>
                 </select>
-                <input type="text" placeholder="Entrer votre Numero d'équipe" name="team" required minlength="1" maxlength="20" size="20" required>
+                <input type="text" placeholder="Entrer votre Numero d'équipe" name="team" required minlength="1" maxlength="20" size="20" required><br/>
                 <input type="checkbox" name="create_team" value=true checked>
-                <label for="team">Creer une nouvelle team</label>
+                <label for="team">Creer une nouvelle team</label><br/>
                 <input type="password" placeholder="Entrer votre Mot de Passe" name="password" required minlength="4" maxlength="20" size="20" required>
                 <input type="password" placeholder="Confirmez votre Mot de Passe" name="passwordConfirm" required minlength="4" maxlength="20" size="20" required>
             </div>
@@ -107,6 +111,10 @@
                 <input type="submit" id='submit' value="S'inscrire">
             </section>
         </form>
+        <section class="inscription">
+            Vous avez deja un compte ?<br/>
+            Connectez-vous <a href="http://localhost:4000/login">ICI</a>
+        </section>
         </div>
     </div>
 </body>
