@@ -1,8 +1,10 @@
-const express = require('express')
+const express = require('express');
 const app = express()
+const path = require('path');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 const port = 4000
+const pug = require('pug');
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.json()); // support json encoded bodies
@@ -14,6 +16,14 @@ app.use(session({secret : "secret"}));
 const fetch = require("node-fetch");
 const { get } = require('jquery');
 
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug')
+
+///////////////module/////////////////////////
+
+var sess;
+
+//////////////////////////////GET////////////////////
 app.get('/create', (req, res) => {
   res.set('Content-Type', 'text/html');
   res.sendfile('create.html')
@@ -21,27 +31,24 @@ app.get('/create', (req, res) => {
 
 app.get('/profil', (req, res) => {
   res.set('Content-Type', 'text/html');
-  res.sendfile('profil.html')
+  res.render('index',{lastName : sess.lastName, firstName : sess.firstName, team : sess.team.number, dept : sess.team.dept})
 })
 
 app.get('/home_page', (req, res) => {
   res.set('Content-Type', 'text/html');
-  /*fetch("http://localhost:3000/find", {
-    method: "post",
-    body: JSON.stringify(req.body),
-    headers: { 'Content-Type': 'application/json' },
+  res.sendfile("home_page.html")
+  const url = "http://localhost:3000/home_page";
+  fetch(url, {
+      method: "GET",
+      headers: { 'Content-Type': 'application/json' },
+      //application/x-www-form-urlencoded
+      
   })
   .then(res => res.json())
-  .then(json => {
-    if(json){
-      console.log(json);
-    }
-    else{
-      console.log(json);
-      res.sendfile('create.html')
-    }
-  });*/
-  res.sendfile('home_page.html')
+  .then( data => {
+      console.log(data[0])
+  })
+  .catch(err => console.log(err));
 })
 
 app.get('/login', (req, res) => {
@@ -53,6 +60,8 @@ app.get('/chat', (req, res) => {
   res.set('Content-Type', 'text/html');
   res.sendfile('chat.html')
 })
+
+/////////////////////////////////POST////////////////////
 
 app.post('/profil',(req, res) => {
   fetch("http://localhost:3000/profil", {
@@ -101,8 +110,8 @@ app.post('/login',(req, res) => {
   .then(res => res.json())
   .then(json => {
     if(json){
-      req.session.e_mail = json;
-      console.log(req.session.e_mail)
+      sess = json;
+      console.log(json)
       res.redirect('/home_page');
     }
     else{
