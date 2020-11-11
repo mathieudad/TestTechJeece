@@ -22,7 +22,6 @@ app.set('view engine', 'pug')
 ///////////////module/////////////////////////
 
 var sess,mail1,mail2;
-var listPeople = [];
 
 //////////////////////////////GET////////////////////
 app.get('/create', (req, res) => {
@@ -37,7 +36,6 @@ app.get('/profil', (req, res) => {
 
 app.get('/home_page', (req, res) => {
   res.set('Content-Type', 'text/html');
-  console.log(req.url)
   const url = "http://localhost:3000";
   fetch(url+req.url, {
       method: "GET",
@@ -47,7 +45,6 @@ app.get('/home_page', (req, res) => {
   })
   .then(res => res.json())
   .then( data => {
-    console.log(data)
     res.render('home_page',{data : data, mail : sess.eMail})
   })
   .catch(err => console.log(err));
@@ -88,18 +85,13 @@ app.get('/chat', (req, res) => {
   }
   temp2 = temp.substring(k+1,j);
   if(temp1!="chat" && temp1!=""){
-    console.log("c diff1")
     mail1 = temp1+"@societe.com";
   }
   if(temp2!="/chat"){
-    console.log("c diff1")
     mail2 = temp2+"@societe.com";
   }
 
-  console.log("mail1 = "+mail1+" mail2 = "+mail2)
-
   const url = "http://localhost:3000";
-  console.log(url+"/chat/"+mail1+"/"+mail2)
   fetch(url+"/chat/"+mail1+"/"+mail2, {
       method: "GET",
       headers: { 'Content-Type': 'application/json' },
@@ -107,7 +99,6 @@ app.get('/chat', (req, res) => {
   })
   .then(res => res.json())
   .then( data => {
-    console.log(data)
     res.render('chat',{mail1 : mail1, mail2 : mail2, data : data})
   })
   .catch(err => console.log(err));
@@ -122,15 +113,9 @@ app.post('/profil',(req, res) => {
     headers: { 'Content-Type': 'application/json' },
   })
   .then(res => res.json())
-  .then(json => {
-    if(json){
-      console.log(json);
-    }
-    else{
-      console.log(json);
-      res.sendfile('create.html')
-    }
-  });
+  .then(json => 
+      res.render('index',{lastName : sess.lastName, firstName : sess.firstName, team : sess.team.number, dept : sess.team.dept, eMail : sess.eMail})
+    );
 })
 
 app.post('/create',(req, res) => {
@@ -148,7 +133,7 @@ app.post('/create',(req, res) => {
     }
     else{
       console.log(json);
-      res.sendfile('create.html')
+      res.redirect('/create')
     }
   });
 })
@@ -169,7 +154,7 @@ app.post('/login',(req, res) => {
     }
     else{
       console.log(json);
-      res.sendfile('login.html')
+      res.redirect('/login')
     }
   });
 })
@@ -183,11 +168,10 @@ app.post('/chat',(req, res) => {
   .then(res => res.json())
   .then(json => {
     if(json){
-      console.log(json);
       res.redirect('/chat')
     }
     else{
-      console.log(json);
+      res.redirect('/home_page')
     }
   });
 })

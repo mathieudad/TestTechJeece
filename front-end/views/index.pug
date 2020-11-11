@@ -55,13 +55,16 @@ head
     .italic{
       font-style: italic;
     }
+    #none{
+      display: none;
+    }
 header
   strong Votre profil
 br
 div
   nav.nav.nav-pills.nav-justified
     a.nav-link(href='http://localhost:4000/home_page') Chercher un profil
-    a.nav-link(href='http://localhost:4000/chat') Chat en ligne
+    a.nav-link(href='#') Chat en ligne
     a.nav-link.active(href='http://localhost:4000/profil') Votre Profil
 br
 .profile
@@ -83,7 +86,7 @@ br
         p= dept
     
 form#down(post='method')
-  .form-group.mx-sm-3.mb-2
+  .form-group.mx-sm-3.mb-2#none
     label.sr-only(for='inputEmail') Email
     input#inputPassword1.form-control(type='text', name='eMail', value= eMail, readonly="readonly")
   br
